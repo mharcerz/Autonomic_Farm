@@ -8,6 +8,12 @@ class Board:
         self.window = window
         self.window.fill(BACKGROUND)
 
+    def draw_tractor(self):
+        image = pygame.image.load('MinecraftCart.jpg')
+        image = pygame.transform.scale(image, (100, 100))
+
+        self.window.blit(image, (7 * SQUARE_SIZE, 7 * SQUARE_SIZE))
+
     def select_square(self, row, col):
         rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
 
@@ -31,4 +37,5 @@ class Board:
             pygame.draw.line(self.window, (0, 0, 0), (0, y), (HEIGHT, y))
 
     def update(self):
+        self.draw_tractor()
         pygame.display.update()
