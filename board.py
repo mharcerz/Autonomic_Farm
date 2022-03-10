@@ -9,7 +9,7 @@ class Board:
         self.window.fill(BACKGROUND)
 
     def draw_tractor(self):
-        image = pygame.image.load('MinecraftCart.jpg')
+        image = pygame.image.load('tractor.jpg')
         image = pygame.transform.scale(image, (100, 100))
 
         self.window.blit(image, (7 * SQUARE_SIZE, 7 * SQUARE_SIZE))
