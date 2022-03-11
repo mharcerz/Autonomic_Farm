@@ -1,5 +1,5 @@
 import pygame
-from constants import BACKGROUND, ROWS, SQUARE_SIZE, WIDTH, HEIGHT, WHITE
+from constants import BACKGROUND, ROWS, COLS, SQUARE_SIZE, WIDTH, HEIGHT, WHITE
 
 
 class Board:
@@ -12,7 +12,7 @@ class Board:
         image = pygame.image.load('tractor.jpg')
         image = pygame.transform.scale(image, (100, 100))
 
-        self.window.blit(image, (7 * SQUARE_SIZE, 7 * SQUARE_SIZE))
+        self.window.blit(image, ((ROWS - 1) * SQUARE_SIZE, (COLS - 1) * SQUARE_SIZE))
 
     def select_square(self, row, col):
         rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)

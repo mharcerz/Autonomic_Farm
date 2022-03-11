@@ -1,9 +1,6 @@
-import pygame
-
 WIDTH, HEIGHT = 800, 800
 ROWS, COLS = 8, 8
 SQUARE_SIZE = WIDTH // COLS
 
 BACKGROUND = (147, 191, 71)
 WHITE = (255, 255, 255)
-
