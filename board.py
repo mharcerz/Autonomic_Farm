@@ -1,4 +1,6 @@
 import pygame
+
+from tractor import Tractor
 from constants import BACKGROUND, ROWS, COLS, SQUARE_SIZE, WIDTH, HEIGHT, WHITE
 from field import Field
 
@@ -9,28 +11,26 @@ class Board:
         self.window = window
         self.window.fill(BACKGROUND)
 
-    def draw_tractor(self):
-        image = pygame.image.load('tractor.jpg')
-        image = pygame.transform.scale(image, (100, 100))
+    def get_square_info(self, row, col):
+        # tworzenie objektu pole po kliknieciu
+        field = Field(row, col)
 
-        self.window.blit(image, ((ROWS - 1) * SQUARE_SIZE, (COLS - 1) * SQUARE_SIZE))
+        # tworzenie klucza do słownika zawierającego wszystkie pola
+        wspolrzedna = str(row) + "," + str(col)
+        Field.addFieldToDict(Field.allFields, wspolrzedna, field)
+
+        # wypisanie informacji o danym polu
+        field.fieldParameters()
+
+        # odwoływanie się do pojedyńczego pola w słowniku
+        # można to ewentualnie poprawić na odwoływanie przez float a nie string
+        # Field.allFields["0,0"].fieldParameters()
+
+        # funkcja do wypisania wszystkich pól dodanych do słownika
+        # Field.printAllFieldsParameters(Field.allFields)
 
     def select_square(self, row, col):
         rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
-
-        #tworzenie objektu pole po kliknieciu 
-        field=Field(row,col)
-        
-        #tworzenie klucza do słownika zawierającego wszystkie pola 
-        wspolrzedna=str(row)+","+str(col)
-        Field.addFieldToDict(Field.allFields,wspolrzedna,field)
-        
-        #odwoływanie się do pojedyńczego pola w słowniku
-        #można to ewentualnie poprawić na odwoływanie przez float a nie string
-        #Field.allFields["0,0"].fieldParameters()
-        
-        #funkcja do wypisania wszystkich pól dodanych do słownika
-        #Field.printAllFieldsParameters(Field.allFields)
         
         if rect in self.board:
             pygame.draw.rect(self.window, BACKGROUND, rect)
@@ -51,5 +51,4 @@ class Board:
             pygame.draw.line(self.window, (0, 0, 0), (0, y), (HEIGHT, y))
 
     def update(self):
-        self.draw_tractor()
         pygame.display.update()
