@@ -28,4 +28,8 @@
 4. Klonujemy repo: ``git clone link_do_repo``
 5. Odpalamy Pycharemem sklonowane repo i reszte już możemy wyklikiwac z Pychrma
 
+## Pullowanie repo z porzuceniem nieśledzonych zmian
+
+1. `git reset --hard origin\<nazwa_brancha>`
+
 *Jak coś jeszcze nie będziecie umieć to piszcie, to się dopisze, żeby wszyscy wiedzieli*
