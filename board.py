@@ -1,6 +1,7 @@
 import pygame
 from constants import BACKGROUND, ROWS, COLS, SQUARE_SIZE, WIDTH, HEIGHT, WHITE
 from field import Field
+from loader import tractor
 
 
 class Board:
@@ -10,7 +11,7 @@ class Board:
         self.window.fill(BACKGROUND)
 
     def draw_tractor(self):
-        image = pygame.image.load('tractor.jpg')
+        image = tractor
         image = pygame.transform.scale(image, (100, 100))
 
         self.window.blit(image, ((ROWS - 1) * SQUARE_SIZE, (COLS - 1) * SQUARE_SIZE))
@@ -18,20 +19,20 @@ class Board:
     def select_square(self, row, col):
         rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
 
-        #tworzenie objektu pole po kliknieciu 
-        field=Field(row,col)
-        
-        #tworzenie klucza do słownika zawierającego wszystkie pola 
-        wspolrzedna=str(row)+","+str(col)
-        Field.addFieldToDict(Field.allFields,wspolrzedna,field)
-        
-        #odwoływanie się do pojedyńczego pola w słowniku
-        #można to ewentualnie poprawić na odwoływanie przez float a nie string
-        #Field.allFields["0,0"].fieldParameters()
-        
-        #funkcja do wypisania wszystkich pól dodanych do słownika
-        #Field.printAllFieldsParameters(Field.allFields)
-        
+        # tworzenie objektu pole po kliknieciu
+        field = Field(row, col)
+
+        # tworzenie klucza do słownika zawierającego wszystkie pola
+        wspolrzedna = str(row) + "," + str(col)
+        Field.addFieldToDict(Field.allFields, wspolrzedna, field)
+
+        # odwoływanie się do pojedyńczego pola w słowniku
+        # można to ewentualnie poprawić na odwoływanie przez float a nie string
+        # Field.allFields["0,0"].fieldParameters()
+
+        # funkcja do wypisania wszystkich pól dodanych do słownika
+        # Field.printAllFieldsParameters(Field.allFields)
+
         if rect in self.board:
             pygame.draw.rect(self.window, BACKGROUND, rect)
             self.board.remove(rect)
