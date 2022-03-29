@@ -10,27 +10,22 @@ class Board:
         self.board = []
         self.window = window
         self.window.fill(BACKGROUND)
+        self.sprites = pygame.sprite.Group()
 
     def draw_tractor(self):
-        sprites = pygame.sprite.Group()
-
         tractor = Tractor()
-
-        sprites.add(tractor)
-
-        sprites.draw(self.window)
+        self.sprites.add(tractor)
 
         # self.window.blit(image, ((ROWS - 1) * SQUARE_SIZE, (COLS - 1) * SQUARE_SIZE))
 
     def select_square(self, row, col):
-        rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
-
         # tworzenie objektu pole po kliknieciu
         field = Field(row, col)
+        self.sprites.add(field)
 
         # tworzenie klucza do słownika zawierającego wszystkie pola
         wspolrzedna = str(row) + "," + str(col)
-        Field.addFieldToDict(Field.allFieldsDictionary, wspolrzedna, field)
+        field.addFieldToDict(Field.allFieldsDictionary, wspolrzedna, field)
 
         # odwoływanie się do pojedyńczego pola w słowniku
         # można to ewentualnie poprawić na odwoływanie przez float a nie string
@@ -39,12 +34,13 @@ class Board:
         # funkcja do wypisania wszystkich pól dodanych do słownika
         # Field.printAllFieldsParameters(Field.allFields)
 
-        if rect in self.board:
-            pygame.draw.rect(self.window, BACKGROUND, rect)
-            self.board.remove(rect)
-        else:
-            self.board.append(rect)
-            pygame.draw.rect(self.window, WHITE, rect)
+        # rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
+        # if rect in self.board:
+        #     pygame.draw.rect(self.window, BACKGROUND, rect)
+        #     self.board.remove(rect)
+        # else:
+        #     self.board.append(rect)
+        #     pygame.draw.rect(self.window, WHITE, rect)
 
         self.draw_grid()
 
@@ -60,3 +56,6 @@ class Board:
     def update(self):
         self.draw_tractor()
         pygame.display.update()
+
+    def draw(self):
+        self.sprites.draw(self.window)

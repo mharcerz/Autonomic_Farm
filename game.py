@@ -31,4 +31,5 @@ class Game:
                     row, col = self.get_row_col_from_mouse(pos)
                     self.board.select_square(row, col)
 
+            self.board.draw()
             self.board.update()
