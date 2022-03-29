@@ -3,33 +3,33 @@ import random
 
 class Field:
     # słownik przechowujący wszystkie pola
-    allFields = {}
+    allFieldsDictionary = {}
 
     # wszystkie możliwe paramerty pola
-    typyUprawy = ["Burak ćwikłowy", "Burak liściowy", "Burak cukrowy", "Burak zwyczajny"]
-    typySrodkowOchrony = ["pestycydy", "doglebowe", "systemiczne"]
-    stanyGleby = ["sucha", "zamokła", "w normie"]
-    typyNawozow = ["organiczny", "wapniowy", "naturalny"]
-    podlewanie = ["tak", "nie"]
-    zbiory = ["tak", "nie"]
-    typyPrzeszkod = ["skała", "słup", "drzewo", "brak"]
+    cropsTypes = ["Burak ćwikłowy", "Burak liściowy", "Burak cukrowy", "Burak zwyczajny"]
+    typesOfProtectionMeasures = ["pestycydy", "doglebowe", "systemiczne"]
+    soilStates = ["sucha", "zamokła", "w normie"]
+    fertilizerTypes = ["organiczny", "wapniowy", "naturalny"]
+    obstacleTypes = ["skała", "słup", "drzewo", "brak"]
+    isWatered = ["tak", "nie"]
+    isCollected = ["tak", "nie"]
 
     # tworzenie objektu pole przez losowanie dostępnych parametrów
-    def __init__(self, wspolrzednaX, wspolrzednaY):
-        self.wspolrzednaX = wspolrzednaX
-        self.wspolrzednaY = wspolrzednaY
-        self.uprawa = random.choice(Field.typyUprawy)
-        self.srodekOchrony = random.choice(Field.typySrodkowOchrony)
-        self.stanGleby = random.choice(Field.stanyGleby)
-        self.nawoz = random.choice(Field.typyNawozow)
-        self.wymagaPodlewania = random.choice(Field.podlewanie)
-        self.wymagaZbiorow = random.choice(Field.zbiory)
-        self.przeszkoda = random.choice(Field.typyPrzeszkod)
+    def __init__(self, posX, posY):
+        self.posX = posX
+        self.posY = posY
+        self.crop = random.choice(Field.cropsTypes)
+        self.protectionMeasure = random.choice(Field.typesOfProtectionMeasures)
+        self.soilState = random.choice(Field.soilStates)
+        self.fertilizer = random.choice(Field.fertilizerTypes)
+        self.obstacle = random.choice(Field.obstacleTypes)
+        self.isWatered = random.choice(Field.isWatered)
+        self.isCollected = random.choice(Field.isCollected)
 
     # wypisanie parametrów pola
     def fieldParameters(self):
-        print("\nParametry pola to:\nWpółrzędne: " + str(self.wspolrzednaX) + " " + str(
-            self.wspolrzednaY) + "\nUprawa: " + self.uprawa + "\nŚrodek ochrony: " + self.srodekOchrony + "\nStan gleby: " + self.stanGleby + "\nStosowany nawóz: " + self.nawoz + "\nCzy wymaga podlewania: " + self.wymagaPodlewania + "\nCzy wymaga zbiorów: " + self.wymagaZbiorow + "\nCzy na polu znajduje się przeszkoda: " + self.przeszkoda)
+        print("\nParametry pola to:\nWpółrzędne: " + str(self.posX) + " " + str(
+            self.posY) + "\nUprawa: " + self.crop + "\nŚrodek ochrony: " + self.protectionMeasure + "\nStan gleby: " + self.soilState + "\nStosowany nawóz: " + self.fertilizer + "\nCzy wymaga podlewania: " + self.isWatered + "\nCzy wymaga zbiorów: " + self.isCollected + "\nCzy na polu znajduje się przeszkoda: " + self.obstacle)
 
     # dodawanie pola do słownika
     def addFieldToDict(dict, key, item):

@@ -30,7 +30,7 @@ class Board:
 
         # tworzenie klucza do słownika zawierającego wszystkie pola
         wspolrzedna = str(row) + "," + str(col)
-        Field.addFieldToDict(Field.allFields, wspolrzedna, field)
+        Field.addFieldToDict(Field.allFieldsDictionary, wspolrzedna, field)
 
         # odwoływanie się do pojedyńczego pola w słowniku
         # można to ewentualnie poprawić na odwoływanie przez float a nie string
