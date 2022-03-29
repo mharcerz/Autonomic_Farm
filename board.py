@@ -2,6 +2,7 @@ import pygame
 from constants import BACKGROUND, ROWS, COLS, SQUARE_SIZE, WIDTH, HEIGHT, WHITE
 from field import Field
 from loader import tractor
+from tractor import Tractor
 
 
 class Board:
@@ -11,10 +12,15 @@ class Board:
         self.window.fill(BACKGROUND)
 
     def draw_tractor(self):
-        image = tractor
-        image = pygame.transform.scale(image, (100, 100))
+        sprites = pygame.sprite.Group()
 
-        self.window.blit(image, ((ROWS - 1) * SQUARE_SIZE, (COLS - 1) * SQUARE_SIZE))
+        tractor = Tractor()
+
+        sprites.add(tractor)
+
+        sprites.draw(self.window)
+
+        # self.window.blit(image, ((ROWS - 1) * SQUARE_SIZE, (COLS - 1) * SQUARE_SIZE))
 
     def select_square(self, row, col):
         rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
