@@ -6,6 +6,7 @@ Twórcy:
 - Mateusz Miller
 - Kamil Spychała 
 - Michał Gulczyński
+- Maksymilian Łasecki
 
 Technologie
 - Python
