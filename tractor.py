@@ -16,15 +16,16 @@ class Tractor:
 
         self.window.blit(image, (self.y, self.x))
 
-    def move_tractor(self, next_x, next_y): #trzeba dodać sprawdzanie czy może pójść na to pole (dodałem usuwanie go z pola na którym był)
-        self.remove_tractor(self.x, self.y)
-        self.x = next_x * SQUARE_SIZE
-        self.y = next_y * SQUARE_SIZE
-        self.draw_tractor()
+    def move_tractor(self, next_x, next_y):
+        if self.can_u_move(next_x, next_y): #jesli nie ma przeszkody to sie rusz
+            self.remove_tractor(self.x, self.y)
+            self.x = next_x * SQUARE_SIZE
+            self.y = next_y * SQUARE_SIZE
+            self.draw_tractor()
 
 
-    def can_u_do_move(self, next_x, next_y):
-        Field.allFields["{},{}".format(next_x, next_y)].fieldParameters()
+    def can_u_move(self, next_x, next_y):
+        return Field.allFields["{},{}".format(next_x, next_y)].can_u_be_here()
 
 
     def update(self):
