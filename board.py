@@ -11,23 +11,33 @@ class Board:
         self.window = window
         self.window.fill(BACKGROUND)
 
+    # def get_square_info(self, row, col):
+    #     # tworzenie objektu pole po kliknieciu
+    #     field = Field(row, col)
+    #
+    #     # tworzenie klucza do słownika zawierającego wszystkie pola
+    #     wspolrzedna = str(row) + "," + str(col)
+    #     Field.addFieldToDict(Field.allFields, wspolrzedna, field)
+    #
+    #     # wypisanie informacji o danym polu
+    #     field.fieldParameters()
+    #
+    #     # odwoływanie się do pojedyńczego pola w słowniku
+    #     # można to ewentualnie poprawić na odwoływanie przez float a nie string
+    #     # Field.allFields["0,0"].fieldParameters()
+    #
+    #     # funkcja do wypisania wszystkich pól dodanych do słownika
+    #     # Field.printAllFieldsParameters(Field.allFields)
+
+    def draw_fields(self):
+        for row in range(ROWS):
+            for col in range(COLS):
+                field = Field(row, col)
+                wspolrzedna = str(row) + "," + str(col)
+                Field.addFieldToDict(Field.allFields, wspolrzedna, field)
+
     def get_square_info(self, row, col):
-        # tworzenie objektu pole po kliknieciu
-        field = Field(row, col)
-
-        # tworzenie klucza do słownika zawierającego wszystkie pola
-        wspolrzedna = str(row) + "," + str(col)
-        Field.addFieldToDict(Field.allFields, wspolrzedna, field)
-
-        # wypisanie informacji o danym polu
-        field.fieldParameters()
-
-        # odwoływanie się do pojedyńczego pola w słowniku
-        # można to ewentualnie poprawić na odwoływanie przez float a nie string
-        # Field.allFields["0,0"].fieldParameters()
-
-        # funkcja do wypisania wszystkich pól dodanych do słownika
-        # Field.printAllFieldsParameters(Field.allFields)
+        Field.allFields["{},{}".format(row, col)].fieldParameters()
 
     def select_square(self, row, col):
         rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)

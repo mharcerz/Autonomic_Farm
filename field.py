@@ -12,7 +12,7 @@ class Field:
     typyNawozow = ["organiczny", "wapniowy", "naturalny"]
     podlewanie = ["tak", "nie"]
     zbiory = ["tak", "nie"]
-    typyPrzeszkod = ["skała", "słup", "drzewo", "brak"]
+    typyPrzeszkod = ["skała", "słup", "drzewo", "brak", "brak", "brak", "brak", "brak", "brak"]
 
     # tworzenie objektu pole przez losowanie dostępnych parametrów
     def __init__(self, wspolrzednaX, wspolrzednaY):
@@ -25,17 +25,21 @@ class Field:
         self.wymagaPodlewania = random.choice(Field.podlewanie)
         self.wymagaZbiorow = random.choice(Field.zbiory)
         self.przeszkoda = random.choice(Field.typyPrzeszkod)
+        if self.przeszkoda != "brak":
+            self.czyMoznaTuStanac = "nie"
+        else:
+            self.czyMoznaTuStanac = "tak"
 
     # wypisanie parametrów pola
     def fieldParameters(self):
         print("\nParametry pola to:\nWpółrzędne: " + str(self.wspolrzednaX) + " " + str(
-            self.wspolrzednaY) + "\nUprawa: " + self.uprawa + "\nŚrodek ochrony: " + self.srodekOchrony + "\nStan gleby: " + self.stanGleby + "\nStosowany nawóz: " + self.nawoz + "\nCzy wymaga podlewania: " + self.wymagaPodlewania + "\nCzy wymaga zbiorów: " + self.wymagaZbiorow + "\nCzy na polu znajduje się przeszkoda: " + self.przeszkoda)
+            self.wspolrzednaY) + "\nUprawa: " + self.uprawa + "\nŚrodek ochrony: " + self.srodekOchrony + "\nStan gleby: " + self.stanGleby + "\nStosowany nawóz: " + self.nawoz + "\nCzy wymaga podlewania: " + self.wymagaPodlewania + "\nCzy wymaga zbiorów: " + self.wymagaZbiorow + "\nCzy na polu znajduje się przeszkoda: " + self.przeszkoda + "\nCzy mozna mozna stanac na tym polu: " + self.czyMoznaTuStanac)
 
     # dodawanie pola do słownika
     def addFieldToDict(dict, key, item):
         if key not in dict:
             dict[key] = item
-            #item.fieldParameters()
+            # item.fieldParameters()
 
     # wypisanie wszystkich pól ze słownika
     def printAllFieldsParameters(dict):
