@@ -2,12 +2,10 @@ import board
 import copy
 
 
-class Istate:  # stan początkowy traktora (strona, w którą patrzy, miejsce, w którym się on znajduje)
+class Istate:  # stan początkowy traktora (miejsce w którym się on znajduje)
     def __init__(self, x, y):
         self.x = x
         self.y = y
-
-
 
     def get_x(self):
         return self.x
@@ -54,8 +52,8 @@ class Node:  # wierzchołek grafu
         self.y = y
 
 
-def goal_test(goaltest, elem):  # funkcja sprawdzająca czy położenie traktora równa się położeniu punktu docelowego, jeśli tak zwraca prawdę, w przeciwnym wypadku fałsz
-    if elem.get_x() == goaltest[0] and elem.get_y() == goaltest[1]:
+def goal_test(destination, elem):  # funkcja sprawdzająca czy położenie traktora równa się położeniu punktu docelowego, jeśli tak zwraca prawdę, w przeciwnym wypadku fałsz
+    if elem.get_x() == destination[0] and elem.get_y() == destination[1]:
         return True
     else:
         return False
@@ -93,7 +91,7 @@ def print_moves(elem):  # zwraca listę ruchów jakie należy wykonać by dotrze
     return moves_list
 
 
-def succ( elem):  # funkcja następnika, przypisuje jakie akcje są możliwe do wykonania na danym polu oraz jaki będzie stan (kierunek, położenie) po wykonaniu tej akcji
+def succ( elem):  # funkcja następnika, przypisuje jakie akcje są możliwe do wykonania na danym polu oraz jaki będzie stan (położenie) po wykonaniu tej akcji
     actions_list = []
     temp = copy.copy(elem.get_direction())
     if temp == 1:

@@ -1,5 +1,6 @@
 import pygame
 
+import tractor
 from tractor import Tractor
 from constants import BACKGROUND, ROWS, COLS, SQUARE_SIZE, WIDTH, HEIGHT, WHITE
 from field import Field
@@ -62,3 +63,6 @@ class Board:
 
     def update(self):
         pygame.display.update()
+
+    def get_field_cost(self, x, y):  # zwraca koszt  danego pola
+        return 0

@@ -1,5 +1,7 @@
 import random
 
+import constants
+
 
 class Field:
     # słownik przechowujący wszystkie pola
@@ -32,8 +34,13 @@ class Field:
 
     # wypisanie parametrów pola
     def fieldParameters(self):
-        print("\nParametry pola to:\nWpółrzędne: " + str(self.wspolrzednaX) + " " + str(
-            self.wspolrzednaY) + "\nUprawa: " + self.uprawa + "\nŚrodek ochrony: " + self.srodekOchrony + "\nStan gleby: " + self.stanGleby + "\nStosowany nawóz: " + self.nawoz + "\nCzy wymaga podlewania: " + self.wymagaPodlewania + "\nCzy wymaga zbiorów: " + self.wymagaZbiorow + "\nCzy na polu znajduje się przeszkoda: " + self.przeszkoda + "\nCzy mozna mozna stanac na tym polu: " + self.czyMoznaTuStanac)
+        print("\nParametry pola to:"
+              "\nWpółrzędne: " + str(self.wspolrzednaX) + " " + str(self.wspolrzednaY) +
+              "\nUprawa: " + self.uprawa + "\nŚrodek ochrony: " + self.srodekOchrony +
+              "\nStan gleby: " + self.stanGleby + "\nStosowany nawóz: " + self.nawoz +
+              "\nCzy wymaga podlewania: " + self.wymagaPodlewania + "\nCzy wymaga zbiorów: " + self.wymagaZbiorow +
+              "\nCzy na polu znajduje się przeszkoda: " + self.przeszkoda +
+              "\nCzy mozna mozna stanac na tym polu: " + self.czyMoznaTuStanac)
 
     def can_u_be_here(self):
         if self.czyMoznaTuStanac == "tak":
