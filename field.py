@@ -49,6 +49,7 @@ class Field:
         else:
             return 0
 
+
     # dodawanie pola do słownika
     def addFieldToDict(dict, key, item):
         if key not in dict:

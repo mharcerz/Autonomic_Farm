@@ -30,6 +30,8 @@ class Tractor:
             self.y = next_y * SQUARE_SIZE
             self.draw_tractor()
 
+
+    @staticmethod
     def is_move_allowed_succ(
             node):  # sprawdza czy dany ruch które chce wykonać traktor jest możliwy, zwraca pozycje po wykonaniu ruchu
         if node.get_direction() == constants.DIRECTION_EAST and node.get_y() * constants.BLOCK_SIZE + constants.BLOCK_SIZE < constants.WIDTH:
@@ -54,7 +56,7 @@ class Tractor:
             return "WEST"
 
     def change_direction(self, moves_list, next_x, next_y):
-        if self.can_u_move(next_x, next_y):
+        if self.can_u_move(next_x, next_y) and moves_list != False:
             for move in moves_list:
                 if move == "rotate_right":
                     self.direction += 1
@@ -172,7 +174,7 @@ def goal_test(elem,
         return False
 
 
-def graphsearch(explored, fringe, goaltest, istate, map, succ):  # przeszukiwanie grafu wszerz
+def graphsearch(explored, fringe, goaltest, istate):  # przeszukiwanie grafu wszerz
     node = Node(None, istate.get_direction(), None, istate.get_x(),
                 istate.get_y())  # wierzchołek początkowy, stworzony ze stanu początkowego wózka
     fringe.append((node, 0))  # wierzchołki do odwiedzenia z priorytetem
@@ -228,8 +230,7 @@ def print_moves(elem):  # zwraca listę ruchów jakie należy wykonać by dotrze
     return moves_list
 
 
-def succ(
-        elem):  # funkcja następnika, przypisuje jakie akcje są możliwe do wykonania na danym polu oraz jaki będzie stan (położenie) po wykonaniu tej akcji
+def succ(elem):  # funkcja następnika, przypisuje jakie akcje są możliwe do wykonania na danym polu oraz jaki będzie stan (położenie) po wykonaniu tej akcji
     actions_list = []
     temp = copy.copy(elem.get_direction())
     if temp == 1:
@@ -247,6 +248,7 @@ def succ(
     temp_move_west = elem.get_x() - 1
     temp_move_east = elem.get_x() + 1
     temp_move_north = elem.get_y() - 1
+
     if Tractor.is_move_allowed_succ(elem) == "y + 1":
         actions_list.append(("move", (elem.get_direction(), temp_move_east, elem.get_y())))
     elif Tractor.is_move_allowed_succ(elem) == "x - 1":
@@ -256,3 +258,38 @@ def succ(
     elif Tractor.is_move_allowed_succ(elem) == "y - 1":
         actions_list.append(("move", (elem.get_direction(), temp_move_west, elem.get_y())))
     return actions_list
+
+def succ_with_obstacle(elem):  # funkcja następnika, przypisuje jakie akcje są możliwe do wykonania na danym polu oraz jaki będzie stan (położenie) po wykonaniu tej akcji
+    actions_list = []
+    temp = copy.copy(elem.get_direction())
+    if temp == 1:
+        temp = 4
+    else:
+        temp = temp - 1
+    actions_list.append(("rotate_left", (temp, elem.get_x(), elem.get_y())))
+    temp = copy.copy(elem.get_direction())
+    if temp == 4:
+        temp = 1
+    else:
+        temp = temp + 1
+    actions_list.append(("rotate_right", (temp, elem.get_x(), elem.get_y())))
+    temp_move_south = elem.get_y() + 1
+    temp_move_west = elem.get_x() - 1
+    temp_move_east = elem.get_x() + 1
+    temp_move_north = elem.get_y() - 1
+
+    if Tractor.is_move_allowed_succ(elem) == "y + 1" and can_you_move_here(elem.get_x()+1, elem.get_y()):
+        actions_list.append(("move", (elem.get_direction(), temp_move_east, elem.get_y())))
+    elif Tractor.is_move_allowed_succ(elem) == "x - 1" and can_you_move_here(elem.get_x(), elem.get_y()-1):
+        actions_list.append(("move", (elem.get_direction(), elem.get_x(), temp_move_north)))
+    elif Tractor.is_move_allowed_succ(elem) == "x + 1" and can_you_move_here(elem.get_x(), elem.get_y()+1):
+        actions_list.append(("move", (elem.get_direction(), elem.get_x(), temp_move_south)))
+    elif Tractor.is_move_allowed_succ(elem) == "y - 1" and can_you_move_here(elem.get_x()-1, elem.get_y()):
+        actions_list.append(("move", (elem.get_direction(), temp_move_west, elem.get_y())))
+    return actions_list
+
+def can_you_move_here(x, y):
+    x = int(x)
+    y = int(y)
+    return Field.allFields["{},{}".format(x, y)].can_u_be_here()
+

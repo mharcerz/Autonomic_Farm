@@ -21,7 +21,7 @@ def get_row_col_from_mouse(pos):
 def main():
     run = True
     board = Board(WINDOW)
-    tractor = Tractor(WINDOW, TRACTOR_X, TRACTOR_Y, constants.DIRECTION_WEST)
+    tractor = Tractor(WINDOW,  TRACTOR_X, TRACTOR_Y, constants.DIRECTION_WEST)
     board.draw_grid()
     board.draw_fields()
 
@@ -44,7 +44,7 @@ def main():
                 destination = row, col
                 print("--------------------------------------------")
                 tractor.tractor_direction()
-                move_list = graphsearch([], [], destination, istate, board, succ)
+                move_list = graphsearch([], [], destination, istate)
                 tractor.move_tractor(row, col) #poruszanie się traktora
                 board.get_square_info(row, col)
                 print(move_list, "<------ move list")
