@@ -15,6 +15,7 @@ class Field:
     podlewanie = ["tak", "nie"]
     zbiory = ["tak", "nie"]
     typyPrzeszkod = ["skała", "słup", "drzewo", "brak", "brak", "brak", "brak", "brak", "brak"]
+    # typyPrzeszkod = [ "brak", "brak", "brak", "brak", "brak", "brak"]
 
     # tworzenie objektu pole przez losowanie dostępnych parametrów
     def __init__(self, wspolrzednaX, wspolrzednaY):
@@ -34,7 +35,7 @@ class Field:
 
     # wypisanie parametrów pola
     def fieldParameters(self):
-        print("\nParametry pola to:"
+        print("Parametry pola to:"
               "\nWpółrzędne: " + str(self.wspolrzednaX) + " " + str(self.wspolrzednaY) +
               "\nUprawa: " + self.uprawa + "\nŚrodek ochrony: " + self.srodekOchrony +
               "\nStan gleby: " + self.stanGleby + "\nStosowany nawóz: " + self.nawoz +

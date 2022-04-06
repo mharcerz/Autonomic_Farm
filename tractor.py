@@ -32,13 +32,13 @@ class Tractor:
 
     def is_move_allowed_succ(
             node):  # sprawdza czy dany ruch które chce wykonać traktor jest możliwy, zwraca pozycje po wykonaniu ruchu
-        if node.get_direction() == constants.DIRECTION_EAST and node.get_x() * constants.BLOCK_SIZE + constants.BLOCK_SIZE < constants.WIDTH:
+        if node.get_direction() == constants.DIRECTION_EAST and node.get_y() * constants.BLOCK_SIZE + constants.BLOCK_SIZE < constants.WIDTH:
             return "x + 1"  # jeśli ten ruch nie przekroczy mapy to jest mozliwy do wykonania
-        elif node.get_direction() == constants.DIRECTION_NORTH and node.get_y() * constants.BLOCK_SIZE - constants.BLOCK_SIZE >= 0:
+        elif node.get_direction() == constants.DIRECTION_NORTH and node.get_x() * constants.BLOCK_SIZE - constants.BLOCK_SIZE >= 0:
             return "y - 1"
-        elif node.get_direction() == constants.DIRECTION_SOUTH and node.get_y() * constants.BLOCK_SIZE + constants.BLOCK_SIZE < constants.HEIGHT:
+        elif node.get_direction() == constants.DIRECTION_SOUTH and node.get_x() * constants.BLOCK_SIZE + constants.BLOCK_SIZE < constants.HEIGHT:
             return "y + 1"
-        elif node.get_direction() == constants.DIRECTION_WEST and node.get_x() * constants.BLOCK_SIZE - constants.BLOCK_SIZE >= 0:
+        elif node.get_direction() == constants.DIRECTION_WEST and node.get_y() * constants.BLOCK_SIZE - constants.BLOCK_SIZE >= 0:
             return "x - 1"
         else:
             return False
@@ -197,7 +197,8 @@ def graphsearch(explored, fringe, goaltest, istate, map, succ):  # przeszukiwani
                 explored_tuple.append((x.get_direction(), x.get_x(), x.get_y()))
             x = Node(action, state[0], elem[0], state[1],
                      state[2])  # stworzenie nowego wierzchołka, którego rodzicem jest elem
-            p = f(goaltest, map, x)  # liczy priorytet
+            # p = f(goaltest, map, x)  # liczy priorytet
+            p = 0
             if state not in fringe_tuple and state not in explored_tuple:  # jeżeli stan nie znajduje się na fringe oraz nie znajduje się w liście wierzchołków odwiedzonych
                 fringe.append((x, p))  # dodanie wierzchołka na fringe
                 fringe = sorted(fringe, key=itemgetter(1))  # sortowanie fringe'a według priorytetu
@@ -246,12 +247,12 @@ def succ(
     temp_move_west = elem.get_x() - 1
     temp_move_east = elem.get_x() + 1
     temp_move_north = elem.get_y() - 1
-    if Tractor.is_move_allowed_succ(elem) == "x + 1":
+    if Tractor.is_move_allowed_succ(elem) == "y + 1":
         actions_list.append(("move", (elem.get_direction(), temp_move_east, elem.get_y())))
-    elif Tractor.is_move_allowed_succ(elem) == "y - 1":
-        actions_list.append(("move", (elem.get_direction(), elem.get_x(), temp_move_north)))
-    elif Tractor.is_move_allowed_succ(elem) == "y + 1":
-        actions_list.append(("move", (elem.get_direction(), elem.get_x(), temp_move_south)))
     elif Tractor.is_move_allowed_succ(elem) == "x - 1":
+        actions_list.append(("move", (elem.get_direction(), elem.get_x(), temp_move_north)))
+    elif Tractor.is_move_allowed_succ(elem) == "x + 1":
+        actions_list.append(("move", (elem.get_direction(), elem.get_x(), temp_move_south)))
+    elif Tractor.is_move_allowed_succ(elem) == "y - 1":
         actions_list.append(("move", (elem.get_direction(), temp_move_west, elem.get_y())))
     return actions_list

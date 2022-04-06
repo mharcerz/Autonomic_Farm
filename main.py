@@ -39,14 +39,15 @@ def main():
                 row, col = get_row_col_from_mouse(pos)
                 # zakomentowanie wyłącza kolorwania pól na biało
                 #board.select_square(row, col)
+
                 istate = Istate(tractor.get_direction(), tractor.get_tractor_x() / constants.BLOCK_SIZE, tractor.get_tractor_y() / constants.BLOCK_SIZE)
                 destination = row, col
                 print("--------------------------------------------")
                 tractor.tractor_direction()
                 move_list = graphsearch([], [], destination, istate, board, succ)
-                print(move_list, "<------ move list")
                 tractor.move_tractor(row, col) #poruszanie się traktora
                 board.get_square_info(row, col)
+                print(move_list, "<------ move list")
                 tractor.change_direction(move_list, row, col)
                 tractor.tractor_direction()
             if event.type == pygame.KEYDOWN:
