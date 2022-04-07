@@ -36,13 +36,15 @@ class Board:
                 field = Field(row, col)
                 wspolrzedna = str(row) + "," + str(col)
                 Field.addFieldToDict(Field.allFields, wspolrzedna, field)
+                if field.przeszkoda != 'brak':
+                    self.select_square(row, col)
 
     def get_square_info(self, row, col):
         Field.allFields["{},{}".format(row, col)].fieldParameters()
 
     def select_square(self, row, col):
         rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
-        
+
         if rect in self.board:
             pygame.draw.rect(self.window, BACKGROUND, rect)
             self.board.remove(rect)
@@ -51,6 +53,11 @@ class Board:
             pygame.draw.rect(self.window, WHITE, rect)
 
         self.draw_grid()
+
+    def draw_selected_squares(self):
+        # Kolorowanie przeszkód
+        for square in self.board:
+            pygame.draw.rect(self.window, WHITE, square)
 
     def draw_grid(self):
         x, y = 0, 0
@@ -64,6 +71,7 @@ class Board:
     def update(self):
         # Aktualizacja ekranu
         pygame.display.update()
+        self.draw_selected_squares()
 
     def get_field_cost(self, x, y):  # zwraca koszt  danego pola
         return 0

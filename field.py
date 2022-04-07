@@ -15,6 +15,7 @@ class Field:
     podlewanie = ["tak", "nie"]
     zbiory = ["tak", "nie"]
     typyPrzeszkod = ["skała", "słup", "drzewo", "brak", "brak", "brak", "brak", "brak", "brak"]
+
     # typyPrzeszkod = [ "brak", "brak", "brak", "brak", "brak", "brak"]
 
     # tworzenie objektu pole przez losowanie dostępnych parametrów
@@ -48,7 +49,6 @@ class Field:
             return 1
         else:
             return 0
-
 
     # dodawanie pola do słownika
     def addFieldToDict(dict, key, item):
