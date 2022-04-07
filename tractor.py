@@ -211,7 +211,7 @@ def graphsearch(explored, fringe, goaltest, istate):  # przeszukiwanie grafu wsz
                         if r > p:
                             fringe.insert(i, (x,
                                               p))  # zamiana state, który należy do fringe z priorytetem r na state z priorytetem p (niższym)
-                            fringe.pop(i + 1)
+                            fringe.pop(i + 1) #todo użyć kolejki priorytetowej żeby nie sortować
                             fringe = sorted(fringe, key=itemgetter(1))  # sortowanie fringe'a według priorytetu
                             break
                     i = i + 1
@@ -231,7 +231,7 @@ def print_moves(elem):  # zwraca listę ruchów jakie należy wykonać by dotrze
 
 
 def succ(elem):  # funkcja następnika, przypisuje jakie akcje są możliwe do wykonania na danym polu oraz jaki będzie stan (położenie) po wykonaniu tej akcji
-    actions_list = []
+    actions_list = [] #todo skrócić to, bez sensu podawać dla zmiany kierunku x i y, zamiast 4 razy if wystarczy 1???
     temp = copy.copy(elem.get_direction())
     if temp == 1:
         temp = 4

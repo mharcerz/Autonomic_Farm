@@ -1,5 +1,5 @@
 import pygame
-
+import queue
 import BFS
 import constants
 from constants import WIDTH, HEIGHT, SQUARE_SIZE, TRACTOR_X, TRACTOR_Y, DIRECTION_WEST
@@ -45,6 +45,7 @@ def main():
                 print("--------------------------------------------")
                 tractor.tractor_direction()
                 move_list = graphsearch([], [], destination, istate)
+                # move_list = graphsearch([], queue.PriorityQueue(), destination, istate)
                 tractor.move_tractor(row, col) #poruszanie się traktora
                 board.get_square_info(row, col)
                 print(move_list, "<------ move list")
