@@ -62,6 +62,7 @@ class Board:
             pygame.draw.line(self.window, (0, 0, 0), (0, y), (HEIGHT, y))
 
     def update(self):
+        # Aktualizacja ekranu
         pygame.display.update()
 
     def get_field_cost(self, x, y):  # zwraca koszt  danego pola

@@ -55,6 +55,7 @@ def main():
                     pos = pygame.mouse.get_pos()
                     row, col = get_row_col_from_mouse(pos)
                     tractor.move_tractor(row, col)
+
         board.draw_grid()
         board.update()
         tractor.update()
