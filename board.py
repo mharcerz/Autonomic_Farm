@@ -12,11 +12,23 @@ class Board:
         self.window.fill(BACKGROUND)
         self.sprites = pygame.sprite.Group()
 
-    # def draw_tractor(self):
-    #     tractor = Tractor()
-    #     self.sprites.add(tractor)
-
-        # self.window.blit(image, ((ROWS - 1) * SQUARE_SIZE, (COLS - 1) * SQUARE_SIZE))
+    # def get_square_info(self, row, col):
+    #     # tworzenie objektu pole po kliknieciu
+    #     field = Field(row, col)
+    #
+    #     # tworzenie klucza do słownika zawierającego wszystkie pola
+    #     wspolrzedna = str(row) + "," + str(col)
+    #     Field.addFieldToDict(Field.allFields, wspolrzedna, field)
+    #
+    #     # wypisanie informacji o danym polu
+    #     field.fieldParameters()
+    #
+    #     # odwoływanie się do pojedyńczego pola w słowniku
+    #     # można to ewentualnie poprawić na odwoływanie przez float a nie string
+    #     # Field.allFields["0,0"].fieldParameters()
+    #
+    #     # funkcja do wypisania wszystkich pól dodanych do słownika
+    #     # Field.printAllFieldsParameters(Field.allFields)
 
     def draw_fields(self):
         for row in range(ROWS):
@@ -24,13 +36,15 @@ class Board:
                 field = Field(row, col)
                 wspolrzedna = str(row) + "," + str(col)
                 Field.addFieldToDict(Field.allFieldsDictionary, wspolrzedna, field)
+                if field.przeszkoda != 'brak':
+                    self.select_square(row, col)
 
     def get_square_info(self, row, col):
         Field.allFieldsDictionary["{},{}".format(row, col)].fieldParameters()
 
     def select_square(self, row, col):
         rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
-        
+
         if rect in self.board:
             pygame.draw.rect(self.window, BACKGROUND, rect)
             self.board.remove(rect)
@@ -39,6 +53,11 @@ class Board:
             pygame.draw.rect(self.window, WHITE, rect)
 
         self.draw_grid()
+
+    def draw_selected_squares(self):
+        # Kolorowanie przeszkód
+        for square in self.board:
+            pygame.draw.rect(self.window, WHITE, square)
 
     def draw_grid(self):
         x, y = 0, 0
@@ -50,8 +69,10 @@ class Board:
             pygame.draw.line(self.window, (0, 0, 0), (0, y), (HEIGHT, y))
 
     def update(self):
+        # Aktualizacja ekranu
         # self.draw_tractor()
         pygame.display.update()
+        self.draw_selected_squares()
 
     def get_field_cost(self, x, y):  # zwraca koszt  danego pola
         return 0
