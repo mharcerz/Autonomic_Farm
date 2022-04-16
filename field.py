@@ -4,11 +4,6 @@ from loader import beetroots, obstacles, grass
 from constants import SQUARE_SIZE
 
 
-class Field:
-    # słownik przechowujący wszystkie pola
-    allFields = {}
-
-
 class Field(pygame.sprite.Sprite):
     # słownik przechowujący wszystkie pola
     allFieldsDictionary = {}
@@ -38,7 +33,7 @@ class Field(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.selectImage(), (SQUARE_SIZE, SQUARE_SIZE))
         self.rect = self.image.get_rect()
         self.rect.topleft = (posY * SQUARE_SIZE, posX * SQUARE_SIZE)
-        if self.przeszkoda != "brak":
+        if self.obstacle != "brak":
             self.czyMoznaTuStanac = "nie"
         else:
             self.czyMoznaTuStanac = "tak"
@@ -55,17 +50,14 @@ class Field(pygame.sprite.Sprite):
               "\nCzy na polu znajduje się przeszkoda: " + self.obstacle
               + "\nCzy mozna mozna stanac na tym polu: " + self.czyMoznaTuStanac)
 
-
     def can_u_be_here(self):
         if self.czyMoznaTuStanac == "tak":
             return 1
         else:
             return 0
 
-
-
     # dodawanie pola do słownika
-    def addFieldToDict(self, dict, key, item):
+    def addFieldToDict(dict, key, item):
         if key not in dict:
             dict[key] = item
             # item.fieldParameters()
@@ -75,7 +67,6 @@ class Field(pygame.sprite.Sprite):
         for key in dict:
             print(key)
             dict[key].fieldParameters()
-
 
     # TO BĘDZIE DO ZMIENIENIA ALE NA RAZIE NIE MAM POMYSLU
     def selectImage(self):

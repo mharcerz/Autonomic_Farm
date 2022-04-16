@@ -9,7 +9,6 @@ from field import Field
 from operator import itemgetter
 
 
-
 class Tractor(pygame.sprite.Sprite):
     def __init__(self, window, x, y, direction):
         pygame.sprite.Sprite.__init__(self)
@@ -21,10 +20,10 @@ class Tractor(pygame.sprite.Sprite):
         self.window = window
         self.x = x
         self.y = y
-        self.draw_tractor()
+        # self.draw_tractor()
 
     def draw_tractor(self):
-        image = pygame.image.load('tractor.jpg')
+        image = tractor
         image = pygame.transform.scale(image, (100, 100))
 
         self.window.blit(image, (self.y, self.x))
@@ -36,7 +35,6 @@ class Tractor(pygame.sprite.Sprite):
             self.x = next_x * SQUARE_SIZE
             self.y = next_y * SQUARE_SIZE
             self.draw_tractor()
-
 
     @staticmethod
     def is_move_allowed_succ(
@@ -79,7 +77,7 @@ class Tractor(pygame.sprite.Sprite):
         print("Kierunek w którą skierowany jest traktor to: " + compas)
 
     def can_u_move(self, next_x, next_y):
-        return Field.allFields["{},{}".format(next_x, next_y)].can_u_be_here()
+        return Field.allFieldsDictionary["{},{}".format(next_x, next_y)].can_u_be_here()
 
     def get_tractor_y(self):
         return self.y
@@ -218,7 +216,7 @@ def graphsearch(explored, fringe, goaltest, istate):  # przeszukiwanie grafu wsz
                         if r > p:
                             fringe.insert(i, (x,
                                               p))  # zamiana state, który należy do fringe z priorytetem r na state z priorytetem p (niższym)
-                            fringe.pop(i + 1) #todo użyć kolejki priorytetowej żeby nie sortować
+                            fringe.pop(i + 1)  # todo użyć kolejki priorytetowej żeby nie sortować
                             fringe = sorted(fringe, key=itemgetter(1))  # sortowanie fringe'a według priorytetu
                             break
                     i = i + 1
@@ -237,8 +235,9 @@ def print_moves(elem):  # zwraca listę ruchów jakie należy wykonać by dotrze
     return moves_list
 
 
-def succ(elem):  # funkcja następnika, przypisuje jakie akcje są możliwe do wykonania na danym polu oraz jaki będzie stan (położenie) po wykonaniu tej akcji
-    actions_list = [] #todo skrócić to, bez sensu podawać dla zmiany kierunku x i y, zamiast 4 razy if wystarczy 1???
+def succ(
+        elem):  # funkcja następnika, przypisuje jakie akcje są możliwe do wykonania na danym polu oraz jaki będzie stan (położenie) po wykonaniu tej akcji
+    actions_list = []  # todo skrócić to, bez sensu podawać dla zmiany kierunku x i y, zamiast 4 razy if wystarczy 1???
     temp = copy.copy(elem.get_direction())
     if temp == 1:
         temp = 4
@@ -266,7 +265,9 @@ def succ(elem):  # funkcja następnika, przypisuje jakie akcje są możliwe do w
         actions_list.append(("move", (elem.get_direction(), temp_move_west, elem.get_y())))
     return actions_list
 
-def succ_with_obstacle(elem):  # funkcja następnika, przypisuje jakie akcje są możliwe do wykonania na danym polu oraz jaki będzie stan (położenie) po wykonaniu tej akcji
+
+def succ_with_obstacle(
+        elem):  # funkcja następnika, przypisuje jakie akcje są możliwe do wykonania na danym polu oraz jaki będzie stan (położenie) po wykonaniu tej akcji
     actions_list = []
     temp = copy.copy(elem.get_direction())
     if temp == 1:
@@ -285,18 +286,18 @@ def succ_with_obstacle(elem):  # funkcja następnika, przypisuje jakie akcje są
     temp_move_east = elem.get_x() + 1
     temp_move_north = elem.get_y() - 1
 
-    if Tractor.is_move_allowed_succ(elem) == "y + 1" and can_you_move_here(elem.get_x()+1, elem.get_y()):
+    if Tractor.is_move_allowed_succ(elem) == "y + 1" and can_you_move_here(elem.get_x() + 1, elem.get_y()):
         actions_list.append(("move", (elem.get_direction(), temp_move_east, elem.get_y())))
-    elif Tractor.is_move_allowed_succ(elem) == "x - 1" and can_you_move_here(elem.get_x(), elem.get_y()-1):
+    elif Tractor.is_move_allowed_succ(elem) == "x - 1" and can_you_move_here(elem.get_x(), elem.get_y() - 1):
         actions_list.append(("move", (elem.get_direction(), elem.get_x(), temp_move_north)))
-    elif Tractor.is_move_allowed_succ(elem) == "x + 1" and can_you_move_here(elem.get_x(), elem.get_y()+1):
+    elif Tractor.is_move_allowed_succ(elem) == "x + 1" and can_you_move_here(elem.get_x(), elem.get_y() + 1):
         actions_list.append(("move", (elem.get_direction(), elem.get_x(), temp_move_south)))
-    elif Tractor.is_move_allowed_succ(elem) == "y - 1" and can_you_move_here(elem.get_x()-1, elem.get_y()):
+    elif Tractor.is_move_allowed_succ(elem) == "y - 1" and can_you_move_here(elem.get_x() - 1, elem.get_y()):
         actions_list.append(("move", (elem.get_direction(), temp_move_west, elem.get_y())))
     return actions_list
+
 
 def can_you_move_here(x, y):
     x = int(x)
     y = int(y)
     return Field.allFields["{},{}".format(x, y)].can_u_be_here()
-

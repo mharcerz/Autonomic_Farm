@@ -12,9 +12,9 @@ class Board:
         self.window.fill(BACKGROUND)
         self.sprites = pygame.sprite.Group()
 
-    def draw_tractor(self):
-        tractor = Tractor()
-        self.sprites.add(tractor)
+    # def draw_tractor(self):
+    #     tractor = Tractor()
+    #     self.sprites.add(tractor)
 
         # self.window.blit(image, ((ROWS - 1) * SQUARE_SIZE, (COLS - 1) * SQUARE_SIZE))
 
@@ -23,10 +23,10 @@ class Board:
             for col in range(COLS):
                 field = Field(row, col)
                 wspolrzedna = str(row) + "," + str(col)
-                Field.addFieldToDict(Field.allFields, wspolrzedna, field)
+                Field.addFieldToDict(Field.allFieldsDictionary, wspolrzedna, field)
 
     def get_square_info(self, row, col):
-        Field.allFields["{},{}".format(row, col)].fieldParameters()
+        Field.allFieldsDictionary["{},{}".format(row, col)].fieldParameters()
 
     def select_square(self, row, col):
         rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
@@ -50,7 +50,7 @@ class Board:
             pygame.draw.line(self.window, (0, 0, 0), (0, y), (HEIGHT, y))
 
     def update(self):
-        self.draw_tractor()
+        # self.draw_tractor()
         pygame.display.update()
 
     def get_field_cost(self, x, y):  # zwraca koszt  danego pola
