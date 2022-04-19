@@ -1,12 +1,12 @@
-import constants
 import copy
+from operator import itemgetter
 
 import pygame
-from loader import tractor
-from constants import SQUARE_SIZE, ROWS, COLS
-from constants import ROWS, COLS, SQUARE_SIZE, TRACTOR_X, TRACTOR_Y, BACKGROUND
+
+import constants
+from constants import *
 from field import Field
-from operator import itemgetter
+from loader import tractor
 
 
 class Tractor(pygame.sprite.Sprite):
@@ -34,13 +34,13 @@ class Tractor(pygame.sprite.Sprite):
 
     @staticmethod  # sprawdza czy dany ruch które chce wykonać traktor jest możliwy, zwraca pozycje po wykonaniu ruchu
     def is_move_allowed_succ(node):
-        if node.get_direction() == constants.DIRECTION_EAST and node.get_y() * constants.BLOCK_SIZE + constants.BLOCK_SIZE < constants.WIDTH:
+        if node.get_direction() == DIRECTION_EAST and node.get_y() * BLOCK_SIZE + BLOCK_SIZE < WIDTH:
             return "x + 1"  # jeśli ten ruch nie przekroczy mapy to jest mozliwy do wykonania
-        elif node.get_direction() == constants.DIRECTION_NORTH and node.get_x() * constants.BLOCK_SIZE - constants.BLOCK_SIZE >= 0:
+        elif node.get_direction() == DIRECTION_NORTH and node.get_x() * BLOCK_SIZE - BLOCK_SIZE >= 0:
             return "y - 1"
-        elif node.get_direction() == constants.DIRECTION_SOUTH and node.get_x() * constants.BLOCK_SIZE + constants.BLOCK_SIZE < constants.HEIGHT:
+        elif node.get_direction() == DIRECTION_SOUTH and node.get_x() * BLOCK_SIZE + BLOCK_SIZE < HEIGHT:
             return "y + 1"
-        elif node.get_direction() == constants.DIRECTION_WEST and node.get_y() * constants.BLOCK_SIZE - constants.BLOCK_SIZE >= 0:
+        elif node.get_direction() == DIRECTION_WEST and node.get_y() * BLOCK_SIZE - BLOCK_SIZE >= 0:
             return "x - 1"
         else:
             return False
@@ -231,8 +231,8 @@ def print_moves(elem):  # zwraca listę ruchów jakie należy wykonać by dotrze
     return moves_list
 
 
-def succ(
-        elem):  # funkcja następnika, przypisuje jakie akcje są możliwe do wykonania na danym polu oraz jaki będzie stan (położenie) po wykonaniu tej akcji
+def succ(elem):
+    # funkcja następnika, przypisuje jakie akcje są możliwe do wykonania na danym polu oraz jaki będzie stan (położenie) po wykonaniu tej akcji
     actions_list = []  # todo skrócić to, bez sensu podawać dla zmiany kierunku x i y, zamiast 4 razy if wystarczy 1???
     temp = copy.copy(elem.get_direction())
     if temp == 1:
@@ -296,4 +296,4 @@ def succ_with_obstacle(
 def can_you_move_here(x, y):
     x = int(x)
     y = int(y)
-    return Field.allFields["{},{}".format(x, y)].can_u_be_here()
+    return Field.allFieldsDictionary["{},{}".format(x, y)].can_u_be_here()

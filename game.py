@@ -11,12 +11,13 @@ class Game:
         self.run = True
         self.window = pygame.display.set_mode((WIDTH, HEIGHT))
         self.spriteGroup = pygame.sprite.Group()
-        self.tractor = Tractor(self.window, TRACTOR_X, TRACTOR_Y, DIRECTION_WEST)
-        self.spriteGroup.add(self.tractor)
+
 
         self.board = Board(self.window)
         self.board.draw_grid()
         self.board.draw_fields()
+        self.tractor = Tractor(self.window, TRACTOR_X, TRACTOR_Y, DIRECTION_WEST)
+        self.spriteGroup.add(self.tractor)
         pygame.display.set_caption("Autonomic Farm")
 
     @staticmethod

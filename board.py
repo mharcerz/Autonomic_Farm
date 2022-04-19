@@ -5,41 +5,26 @@ from field import Field
 from loader import tractor
 
 
-class Board:
+class Board(pygame.sprite.Sprite):
     def __init__(self, window):
+        super().__init__()
         self.board = []
         self.window = window
         self.window.fill(BACKGROUND)
         self.sprites = pygame.sprite.Group()
 
-    # def get_square_info(self, row, col):
-    #     # tworzenie objektu pole po kliknieciu
-    #     field = Field(row, col)
-    #
-    #     # tworzenie klucza do słownika zawierającego wszystkie pola
-    #     wspolrzedna = str(row) + "," + str(col)
-    #     Field.addFieldToDict(Field.allFields, wspolrzedna, field)
-    #
-    #     # wypisanie informacji o danym polu
-    #     field.fieldParameters()
-    #
-    #     # odwoływanie się do pojedyńczego pola w słowniku
-    #     # można to ewentualnie poprawić na odwoływanie przez float a nie string
-    #     # Field.allFields["0,0"].fieldParameters()
-    #
-    #     # funkcja do wypisania wszystkich pól dodanych do słownika
-    #     # Field.printAllFieldsParameters(Field.allFields)
-
     def draw_fields(self):
         for row in range(ROWS):
             for col in range(COLS):
                 field = Field(row, col)
+                self.sprites.add(field)
                 wspolrzedna = str(row) + "," + str(col)
                 Field.addFieldToDict(Field.allFieldsDictionary, wspolrzedna, field)
                 if field.obstacle != 'brak':
                     self.select_square(row, col)
 
-    def get_square_info(self, row, col):
+    @staticmethod
+    def get_square_info(row, col):
         Field.allFieldsDictionary["{},{}".format(row, col)].fieldParameters()
 
     def select_square(self, row, col):
@@ -70,11 +55,11 @@ class Board:
 
     def update(self):
         # Aktualizacja ekranu
-        # self.draw_tractor()
         pygame.display.update()
         self.draw_selected_squares()
 
-    def get_field_cost(self, x, y):  # zwraca koszt  danego pola
+    @staticmethod
+    def get_field_cost(x, y):  # zwraca koszt  danego pola
         return 0
 
     def draw(self):

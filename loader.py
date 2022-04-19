@@ -14,4 +14,4 @@ beetroots = [pygame.image.load("resources/buraki/burak_ćwikłowy.png"),
 
 obstacles = [pygame.image.load("resources/przeszkody/słup.png"),
              pygame.image.load("resources/przeszkody/drzewo.png"),
-             pygame.image.load("resources/przeszkody/kamyki.jpg")]
+             pygame.image.load("resources/przeszkody/kamyki.png")]

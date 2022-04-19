@@ -29,14 +29,11 @@ class Field(pygame.sprite.Sprite):
         self.obstacle = random.choice(Field.obstacleTypes)
         self.isWatered = random.choice(Field.isWatered)
         self.isCollected = random.choice(Field.isCollected)
+        self.czyMoznaTuStanac = "nie" if self.obstacle != "brak" else "tak"
 
         self.image = pygame.transform.scale(self.selectImage(), (SQUARE_SIZE, SQUARE_SIZE))
         self.rect = self.image.get_rect()
         self.rect.topleft = (posY * SQUARE_SIZE, posX * SQUARE_SIZE)
-        if self.obstacle != "brak":
-            self.czyMoznaTuStanac = "nie"
-        else:
-            self.czyMoznaTuStanac = "tak"
 
     # wypisanie parametrów pola
     def fieldParameters(self):
@@ -70,11 +67,21 @@ class Field(pygame.sprite.Sprite):
 
     # TO BĘDZIE DO ZMIENIENIA ALE NA RAZIE NIE MAM POMYSLU
     def selectImage(self):
-        if self.crop == "Burak ćwikłowy":
-            return beetroots[0]
-        elif self.crop == "Burak liściowy":
-            return beetroots[1]
-        elif self.crop == "Burak cukrowy":
-            return beetroots[2]
-        elif self.crop == "Burak zwyczajny":
-            return beetroots[3]
+        if self.czyMoznaTuStanac == "tak":
+            if self.crop == "Burak ćwikłowy":
+                return beetroots[0]
+            elif self.crop == "Burak liściowy":
+                return beetroots[1]
+            elif self.crop == "Burak cukrowy":
+                return beetroots[2]
+            elif self.crop == "Burak zwyczajny":
+                return beetroots[3]
+        elif self.czyMoznaTuStanac == "nie":
+            if self.obstacle == "slup":
+                return obstacles[0]
+            elif self.obstacle == "drzewo":
+                return obstacles[1]
+            elif self.obstacle == "skała":
+                return obstacles[2]
+            else:
+                return obstacles[0]
