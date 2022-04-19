@@ -20,13 +20,9 @@ class Tractor(pygame.sprite.Sprite):
         self.window = window
         self.x = x
         self.y = y
-        # self.draw_tractor()
 
-    def draw_tractor(self):
-        image = tractor
-        image = pygame.transform.scale(image, (100, 100))
-
-        self.window.blit(image, (self.y, self.x))
+    def update_position(self):
+        self.rect.topleft = (self.y, self.x)
 
     def move_tractor(self, next_x, next_y):
         if self.can_u_move(next_x, next_y):  # jesli nie ma przeszkody to sie rusz
@@ -34,11 +30,10 @@ class Tractor(pygame.sprite.Sprite):
             self.parent = self.x, self.y
             self.x = next_x * SQUARE_SIZE
             self.y = next_y * SQUARE_SIZE
-            self.draw_tractor()
+            self.update_position()
 
-    @staticmethod
-    def is_move_allowed_succ(
-            node):  # sprawdza czy dany ruch które chce wykonać traktor jest możliwy, zwraca pozycje po wykonaniu ruchu
+    @staticmethod  # sprawdza czy dany ruch które chce wykonać traktor jest możliwy, zwraca pozycje po wykonaniu ruchu
+    def is_move_allowed_succ(node):
         if node.get_direction() == constants.DIRECTION_EAST and node.get_y() * constants.BLOCK_SIZE + constants.BLOCK_SIZE < constants.WIDTH:
             return "x + 1"  # jeśli ten ruch nie przekroczy mapy to jest mozliwy do wykonania
         elif node.get_direction() == constants.DIRECTION_NORTH and node.get_x() * constants.BLOCK_SIZE - constants.BLOCK_SIZE >= 0:
@@ -50,7 +45,8 @@ class Tractor(pygame.sprite.Sprite):
         else:
             return False
 
-    def whichDirection(self, direction):
+    @staticmethod
+    def whichDirection(direction):
         if direction == 1:
             return "NORTH"
         elif direction == 2:
@@ -86,7 +82,7 @@ class Tractor(pygame.sprite.Sprite):
         return self.x
 
     def update(self):
-        self.draw_tractor()
+        self.update_position()
 
     def remove_tractor(self, x, y):
         self.window.fill(BACKGROUND)
@@ -171,8 +167,8 @@ def f(goaltest, map, node):  # funkcja zwracająca sumę funkcji kosztu oraz heu
     return cost(map, node) + heuristic(goaltest, node)
 
 
-def goal_test(elem,
-              goaltest):  # funkcja sprawdzająca czy położenie traktora równa się położeniu punktu docelowego, jeśli tak zwraca prawdę, w przeciwnym wypadku fałsz
+def goal_test(elem, goaltest):
+    # funkcja sprawdzająca czy położenie traktora równa się położeniu punktu docelowego, jeśli tak zwraca prawdę, w przeciwnym wypadku fałsz
     if elem.get_x() == goaltest[0] and elem.get_y() == goaltest[1]:
         return True
     else:

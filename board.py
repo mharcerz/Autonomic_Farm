@@ -36,7 +36,7 @@ class Board:
                 field = Field(row, col)
                 wspolrzedna = str(row) + "," + str(col)
                 Field.addFieldToDict(Field.allFieldsDictionary, wspolrzedna, field)
-                if field.przeszkoda != 'brak':
+                if field.obstacle != 'brak':
                     self.select_square(row, col)
 
     def get_square_info(self, row, col):
