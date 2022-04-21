@@ -43,7 +43,8 @@ class Game:
                     self.tractor.tractor_direction()
                     move_list = graphsearch([], [], destination, istate)
                     # move_list = graphsearch([], queue.PriorityQueue(), destination, istate)
-                    self.tractor.move_tractor(row, col)  # poruszanie się traktora
+                    if(move_list != False):
+                        self.tractor.move_tractor(row, col)  # poruszanie się traktora
                     self.board.get_square_info(row, col)
                     print(move_list, "<------ move list")
                     self.tractor.change_direction(move_list, row, col)

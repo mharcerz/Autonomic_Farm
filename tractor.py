@@ -188,7 +188,7 @@ def graphsearch(explored, fringe, goaltest, istate):  # przeszukiwanie grafu wsz
                      goaltest) is True:  # jeżeli osiągniemy cel w trakcie przeszukiwania grafu wszerz (wjedziemy na pole docelowe) : zwracamy listę ruchów, po których wykonaniu dotrzemy na miejsce
             return print_moves(elem[0])
         explored.append(elem)  # dodajemy wierzchołek do listy wierzchołków odwiedzonych
-        for (action, state) in succ(
+        for (action, state) in succ_with_obstacle(
                 temp):  # iterujemy po wszystkich możliwych akcjach i stanach otrzymanych dla danego wierzchołka grafu
             fringe_tuple = []
             fringe_tuple_prio = []
@@ -290,6 +290,7 @@ def succ_with_obstacle(
         actions_list.append(("move", (elem.get_direction(), elem.get_x(), temp_move_south)))
     elif Tractor.is_move_allowed_succ(elem) == "y - 1" and can_you_move_here(elem.get_x() - 1, elem.get_y()):
         actions_list.append(("move", (elem.get_direction(), temp_move_west, elem.get_y())))
+
     return actions_list
 
 

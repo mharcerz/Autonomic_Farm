@@ -1,7 +1,7 @@
 import random
 import pygame
 from loader import beetroots, obstacles, grass
-from constants import SQUARE_SIZE
+from constants import SQUARE_SIZE, ROWS, COLS
 
 
 class Field(pygame.sprite.Sprite):
@@ -9,31 +9,46 @@ class Field(pygame.sprite.Sprite):
     allFieldsDictionary = {}
 
     # wszystkie możliwe paramerty pola
-    cropsTypes = ["Burak ćwikłowy", "Burak liściowy", "Burak cukrowy", "Burak zwyczajny"]
-    typesOfProtectionMeasures = ["pestycydy", "doglebowe", "systemiczne"]
-    soilStates = ["sucha", "zamokła", "w normie"]
-    fertilizerTypes = ["organiczny", "wapniowy", "naturalny"]
-    obstacleTypes = ["skała", "słup", "drzewo", "brak", "brak", "brak", "brak", "brak", "brak"]
-    isWatered = ["tak", "nie"]
-    isCollected = ["tak", "nie"]
+    cropsTypes = ["", "Burak ćwikłowy", "Burak liściowy", "Burak cukrowy", "Burak zwyczajny"]
+    typesOfProtectionMeasures = ["", "pestycydy", "doglebowe", "systemiczne"]
+    soilStates = ["", "sucha", "zamokła", "w normie"]
+    fertilizerTypes = ["", "organiczny", "wapniowy", "naturalny"]
+    obstacleTypes = ["", "skała", "słup", "drzewo", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak"]
+    isWatered = ["", "tak", "nie"]
+    isCollected = ["", "tak", "nie"]
 
     # tworzenie objektu pole przez losowanie dostępnych parametrów
     def __init__(self, posX, posY):
         pygame.sprite.Sprite.__init__(self)
         self.posX = posX
         self.posY = posY
-        self.crop = random.choice(Field.cropsTypes)
-        self.protectionMeasure = random.choice(Field.typesOfProtectionMeasures)
-        self.soilState = random.choice(Field.soilStates)
-        self.fertilizer = random.choice(Field.fertilizerTypes)
-        self.obstacle = random.choice(Field.obstacleTypes)
-        self.isWatered = random.choice(Field.isWatered)
-        self.isCollected = random.choice(Field.isCollected)
-        self.czyMoznaTuStanac = "nie" if self.obstacle != "brak" else "tak"
+        if self.posX == ROWS - 1 and self.posY == COLS - 1:
+            self.crop = Field.cropsTypes[0]
+            self.protectionMeasure = Field.typesOfProtectionMeasures[0]
+            self.soilState = Field.soilStates[0]
+            self.fertilizer = Field.fertilizerTypes[0]
+            self.obstacle = Field.obstacleTypes[0]
+            self.isWatered = Field.isWatered[0]
+            self.isCollected = Field.isCollected[0]
+            self.czyMoznaTuStanac = "tak"
 
-        self.image = pygame.transform.scale(self.selectImage(), (SQUARE_SIZE, SQUARE_SIZE))
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (posY * SQUARE_SIZE, posX * SQUARE_SIZE)
+            self.image = pygame.transform.scale(grass, (SQUARE_SIZE, SQUARE_SIZE))
+            self.rect = self.image.get_rect()
+            self.rect.topleft = (posY * SQUARE_SIZE, posX * SQUARE_SIZE)
+        else:
+            self.crop = Field.cropsTypes[random.randint(1, len(Field.cropsTypes) - 1)]
+            self.protectionMeasure = Field.typesOfProtectionMeasures[
+                random.randint(1, len(Field.typesOfProtectionMeasures) - 1)]
+            self.soilState = Field.soilStates[random.randint(1, len(Field.soilStates) - 1)]
+            self.fertilizer = Field.fertilizerTypes[random.randint(1, len(Field.fertilizerTypes) - 1)]
+            self.obstacle = Field.obstacleTypes[random.randint(1, len(Field.obstacleTypes) - 1)]
+            self.isWatered = Field.isWatered[random.randint(1, len(Field.isWatered) - 1)]
+            self.isCollected = Field.isCollected[random.randint(1, len(Field.isCollected) - 1)]
+            self.czyMoznaTuStanac = "nie" if self.obstacle != "brak" else "tak"
+
+            self.image = pygame.transform.scale(self.selectImage(), (SQUARE_SIZE, SQUARE_SIZE))
+            self.rect = self.image.get_rect()
+            self.rect.topleft = (posY * SQUARE_SIZE, posX * SQUARE_SIZE)
 
     # wypisanie parametrów pola
     def fieldParameters(self):
