@@ -200,20 +200,16 @@ def graphsearch(explored, fringe, goaltest, istate):  # przeszukiwanie grafu wsz
                 explored_tuple.append((x.get_direction(), x.get_x(), x.get_y()))
             x = Node(action, state[0], elem[0], state[1],
                      state[2])  # stworzenie nowego wierzchołka, którego rodzicem jest elem
-            # p = f(goaltest, map, x)  # liczy priorytet
             p = 0
             if state not in fringe_tuple and state not in explored_tuple:  # jeżeli stan nie znajduje się na fringe oraz nie znajduje się w liście wierzchołków odwiedzonych
-                fringe.append((x, p))  # dodanie wierzchołka na fringe
-                fringe = sorted(fringe, key=itemgetter(1))  # sortowanie fringe'a według priorytetu
+                fringe.append((x, 0))  # dodanie wierzchołka na fringe
             elif state in fringe_tuple:
                 i = 0
                 for (state_prio, r) in fringe_tuple_prio:
                     if str(state_prio) == str(state):
                         if r > p:
-                            fringe.insert(i, (x,
-                                              p))  # zamiana state, który należy do fringe z priorytetem r na state z priorytetem p (niższym)
-                            fringe.pop(i + 1)  # todo użyć kolejki priorytetowej żeby nie sortować
-                            fringe = sorted(fringe, key=itemgetter(1))  # sortowanie fringe'a według priorytetu
+                            fringe.insert(i, (x, p))  # zamiana state, który należy do fringe z priorytetem r na state z priorytetem p (niższym)
+                            fringe.pop(i + 1)
                             break
                     i = i + 1
 
@@ -246,19 +242,16 @@ def succ(elem):
     else:
         temp = temp + 1
     actions_list.append(("rotate_right", (temp, elem.get_x(), elem.get_y())))
-    temp_move_south = elem.get_y() + 1
-    temp_move_west = elem.get_x() - 1
-    temp_move_east = elem.get_x() + 1
-    temp_move_north = elem.get_y() - 1
+
 
     if Tractor.is_move_allowed_succ(elem) == "y + 1":
-        actions_list.append(("move", (elem.get_direction(), temp_move_east, elem.get_y())))
+        actions_list.append(("move", (elem.get_direction(), elem.get_x()+1, elem.get_y()   ) ))
     elif Tractor.is_move_allowed_succ(elem) == "x - 1":
-        actions_list.append(("move", (elem.get_direction(), elem.get_x(), temp_move_north)))
+        actions_list.append(("move", (elem.get_direction(), elem.get_x()  , elem.get_y()-1 ) ))
     elif Tractor.is_move_allowed_succ(elem) == "x + 1":
-        actions_list.append(("move", (elem.get_direction(), elem.get_x(), temp_move_south)))
+        actions_list.append(("move", (elem.get_direction(), elem.get_x()  , elem.get_y()+1 ) ))
     elif Tractor.is_move_allowed_succ(elem) == "y - 1":
-        actions_list.append(("move", (elem.get_direction(), temp_move_west, elem.get_y())))
+        actions_list.append(("move", (elem.get_direction(), elem.get_x()-1, elem.get_y()   ) ))
     return actions_list
 
 
