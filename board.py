@@ -1,8 +1,7 @@
 import pygame
-from tractor import Tractor
+
 from constants import BACKGROUND, ROWS, COLS, SQUARE_SIZE, WIDTH, HEIGHT, WHITE
 from field import Field
-from loader import tractor
 
 
 class Board(pygame.sprite.Sprite):
@@ -20,8 +19,6 @@ class Board(pygame.sprite.Sprite):
                 self.sprites.add(field)
                 wspolrzedna = str(row) + "," + str(col)
                 Field.addFieldToDict(Field.allFieldsDictionary, wspolrzedna, field)
-                if field.obstacle != 'brak':
-                    self.select_square(row, col)
 
     @staticmethod
     def get_square_info(row, col):
@@ -56,11 +53,7 @@ class Board(pygame.sprite.Sprite):
     def update(self):
         # Aktualizacja ekranu
         pygame.display.update()
-        self.draw_selected_squares()
-
-    @staticmethod
-    def get_field_cost(x, y):  # zwraca koszt  danego pola
-        return 0
+        # self.draw_selected_squares()
 
     def draw(self):
         self.sprites.draw(self.window)
