@@ -1,5 +1,3 @@
-import copy
-
 from constants import ROWS, COLS
 from field import Field
 from loader import grass
@@ -90,7 +88,7 @@ def h(destination, node):
 
 
 def graph_search(explored, fringe, destination, initial_state):
-    reset_all_fields()
+    reset_all_fields_image()
 
     node = Node(None, initial_state.get_direction(), None, initial_state.get_x(), initial_state.get_y())
 
@@ -99,6 +97,7 @@ def graph_search(explored, fringe, destination, initial_state):
     while True:
         if fringe.empty():
             return False
+
         elem = fringe.get()
 
         if is_destination_reached(elem[1], destination) is True:
@@ -179,10 +178,10 @@ def print_moves(elem):
     return moves_list
 
 
-def reset_all_fields():
+def reset_all_fields_image():
     for x in range(ROWS):
         for y in range(COLS):
-            Field.allFieldsDictionary["{},{}".format(x, y)].reset_fields()
+            Field.allFieldsDictionary["{},{}".format(x, y)].reset_field_image()
 
 
 def is_in_queue(state, q):
@@ -193,6 +192,6 @@ def is_in_queue(state, q):
 
 
 def get_field_cost(node):
-    # if node.get_action() == "rotate_left" or node.get_direction() == "rotate_right":
-    #     return 0
+    if node.get_action() == "rotate_left" or node.get_direction() == "rotate_right":
+        return 0
     return Field.allFieldsDictionary["{},{}".format(int(node.get_x()), int(node.get_y()))].getCost()

@@ -13,7 +13,8 @@ class Field(pygame.sprite.Sprite):
     typesOfProtectionMeasures = ["", "pestycydy", "doglebowe", "systemiczne"]
     soilStates = ["", "sucha", "zamokła", "w normie"]
     fertilizerTypes = ["", "organiczny", "wapniowy", "naturalny"]
-    obstacleTypes = ["", "skała", "słup", "drzewo", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak"]
+    obstacleTypes = ["", "skała", "słup", "drzewo", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak",
+                     "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak"]
     isWatered = ["", "tak", "nie"]
     isCollected = ["", "tak", "nie"]
 
@@ -71,7 +72,7 @@ class Field(pygame.sprite.Sprite):
             return 0
 
     def set_image(self, img):
-        self.image = img
+        self.image = pygame.transform.scale(img, (SQUARE_SIZE, SQUARE_SIZE))
 
     # dodawanie pola do słownika
     @staticmethod
@@ -86,10 +87,9 @@ class Field(pygame.sprite.Sprite):
             print(key)
             dictionary[key].fieldParameters()
 
-    def reset_fields(self):
+    def reset_field_image(self):
         self.image = pygame.transform.scale(self.selectImage(), (SQUARE_SIZE, SQUARE_SIZE))
 
-    # TO BĘDZIE DO ZMIENIENIA ALE NA RAZIE NIE MAM POMYSLU
     def selectImage(self):
         if self.czyMoznaTuStanac == "tak":
             # if self.crop == "Burak ćwikłowy":
@@ -127,5 +127,3 @@ class Field(pygame.sprite.Sprite):
             return WET_SOIL_COST
         else:
             return 0
-
-
