@@ -1,6 +1,9 @@
 import pygame.image
 
-tractor = pygame.image.load("resources/tractor.jpg")
+tractor = [pygame.image.load("resources/traktor/tractorU.jpg"),
+           pygame.image.load("resources/traktor/tractorR.jpg"),
+           pygame.image.load("resources/traktor/tractorD.jpg"),
+           pygame.image.load("resources/traktor/tractorL.jpg")]
 
 grass = pygame.image.load("resources/gleby/trawka.jpg")
 dry_soil = pygame.image.load("resources/gleby/sucha_gleba.jpg")

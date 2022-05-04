@@ -1,7 +1,7 @@
 import random
 import pygame
-from loader import beetroots, obstacles, grass
-from constants import SQUARE_SIZE, ROWS, COLS
+from loader import beetroots, obstacles, grass, dry_soil, normal_soil, wet_soil
+from constants import SQUARE_SIZE, ROWS, COLS, DRY_SOIL_COST, NORMAL_SOIL_COST, WET_SOIL_COST
 
 
 class Field(pygame.sprite.Sprite):
@@ -13,7 +13,8 @@ class Field(pygame.sprite.Sprite):
     typesOfProtectionMeasures = ["", "pestycydy", "doglebowe", "systemiczne"]
     soilStates = ["", "sucha", "zamokła", "w normie"]
     fertilizerTypes = ["", "organiczny", "wapniowy", "naturalny"]
-    obstacleTypes = ["", "skała", "słup", "drzewo", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak"]
+    obstacleTypes = ["", "skała", "słup", "drzewo", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak",
+                     "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak"]
     isWatered = ["", "tak", "nie"]
     isCollected = ["", "tak", "nie"]
 
@@ -31,6 +32,7 @@ class Field(pygame.sprite.Sprite):
             self.isWatered = Field.isWatered[0]
             self.isCollected = Field.isCollected[0]
             self.czyMoznaTuStanac = "tak"
+            self.cost = 0
 
             self.image = pygame.transform.scale(grass, (SQUARE_SIZE, SQUARE_SIZE))
             self.rect = self.image.get_rect()
@@ -49,6 +51,7 @@ class Field(pygame.sprite.Sprite):
             self.image = pygame.transform.scale(self.selectImage(), (SQUARE_SIZE, SQUARE_SIZE))
             self.rect = self.image.get_rect()
             self.rect.topleft = (posY * SQUARE_SIZE, posX * SQUARE_SIZE)
+            self.cost = 0
 
     # wypisanie parametrów pola
     def fieldParameters(self):
@@ -68,29 +71,43 @@ class Field(pygame.sprite.Sprite):
         else:
             return 0
 
+    def set_image(self, img):
+        self.image = pygame.transform.scale(img, (SQUARE_SIZE, SQUARE_SIZE))
+
     # dodawanie pola do słownika
-    def addFieldToDict(dict, key, item):
-        if key not in dict:
-            dict[key] = item
+    @staticmethod
+    def addFieldToDict(dictionary, key, item):
+        if key not in dictionary:
+            dictionary[key] = item
             # item.fieldParameters()
 
     # wypisanie wszystkich pól ze słownika
-    def printAllFieldsParameters(self, dict):
-        for key in dict:
+    def printAllFieldsParameters(self, dictionary):
+        for key in dictionary:
             print(key)
-            dict[key].fieldParameters()
+            dictionary[key].fieldParameters()
 
-    # TO BĘDZIE DO ZMIENIENIA ALE NA RAZIE NIE MAM POMYSLU
+    def reset_field_image(self):
+        self.image = pygame.transform.scale(self.selectImage(), (SQUARE_SIZE, SQUARE_SIZE))
+
     def selectImage(self):
         if self.czyMoznaTuStanac == "tak":
-            if self.crop == "Burak ćwikłowy":
-                return beetroots[0]
-            elif self.crop == "Burak liściowy":
-                return beetroots[1]
-            elif self.crop == "Burak cukrowy":
-                return beetroots[2]
-            elif self.crop == "Burak zwyczajny":
-                return beetroots[3]
+            # if self.crop == "Burak ćwikłowy":
+            #     return beetroots[0]
+            # elif self.crop == "Burak liściowy":
+            #     return beetroots[1]
+            # elif self.crop == "Burak cukrowy":
+            #     return beetroots[2]
+            # elif self.crop == "Burak zwyczajny":
+            #     return beetroots[3]
+            if self.soilState == "sucha":
+                return dry_soil
+            elif self.soilState == "w normie":
+                return normal_soil
+            elif self.soilState == "zamokła":
+                return wet_soil
+            else:
+                return grass
         elif self.czyMoznaTuStanac == "nie":
             if self.obstacle == "slup":
                 return obstacles[0]
@@ -100,3 +117,13 @@ class Field(pygame.sprite.Sprite):
                 return obstacles[2]
             else:
                 return obstacles[0]
+
+    def getCost(self):
+        if self.soilState == "sucha":
+            return DRY_SOIL_COST
+        elif self.soilState == "w normie":
+            return NORMAL_SOIL_COST
+        elif self.soilState == "zamokła":
+            return WET_SOIL_COST
+        else:
+            return 0
