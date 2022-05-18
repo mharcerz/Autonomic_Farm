@@ -44,17 +44,22 @@ class Field(pygame.sprite.Sprite):
             self.rect = self.image.get_rect()
             self.rect.topleft = (posY * SQUARE_SIZE, posX * SQUARE_SIZE)
         else:
-            self.crop = Field.cropsTypes[random.randint(1, len(Field.cropsTypes) - 1)]
-            self.sianie = Field.sianie[
-                random.randint(1, len(Field.sianie) - 1)]
-            self.czy_rosnie = Field.czy_rosnie[random.randint(1, len(Field.czy_rosnie) - 1)]
-            self.suchosc_gleby = Field.suchosc_gleby[random.randint(0, len(Field.suchosc_gleby) - 1)]
-            self.obstacle = Field.obstacleTypes[random.randint(1, len(Field.obstacleTypes) - 1)]
-            self.owady = Field.owady[random.randint(1, len(Field.owady) - 1)]
-            self.chwasty = Field.chwasty[random.randint(1, len(Field.chwasty) - 1)]
-            self.ph_gleby = Field.ph_gleby[random.randint(1, len(Field.ph_gleby) - 1)]
 
+            self.obstacle = Field.obstacleTypes[random.randint(1, len(Field.obstacleTypes) - 1)]
             self.czyMoznaTuStanac = "nie" if self.obstacle != "brak" else "tak"
+
+            if self.czyMoznaTuStanac == "tak":
+                self.crop = Field.cropsTypes[random.randint(1, len(Field.cropsTypes) - 1)]
+                self.sianie = Field.sianie[
+                    random.randint(1, len(Field.sianie) - 1)]
+                self.czy_rosnie = Field.czy_rosnie[random.randint(1, len(Field.czy_rosnie) - 1)]
+                self.suchosc_gleby = Field.suchosc_gleby[random.randint(0, len(Field.suchosc_gleby) - 1)]
+
+                self.owady = Field.owady[random.randint(1, len(Field.owady) - 1)]
+                self.chwasty = Field.chwasty[random.randint(1, len(Field.chwasty) - 1)]
+                self.ph_gleby = Field.ph_gleby[random.randint(1, len(Field.ph_gleby) - 1)]
+
+
 
             self.image = pygame.transform.scale(self.selectImage(), (SQUARE_SIZE, SQUARE_SIZE))
             self.rect = self.image.get_rect()
@@ -63,17 +68,22 @@ class Field(pygame.sprite.Sprite):
 
     # wypisanie parametrów pola
     def fieldParameters(self):
-        print("\nParametry pola to:\nWspółrzędne: " + str(self.posX) + ", " + str(self.posY) +
-              "\nUprawa: " + self.crop +
-              "\nCzy zasiane: " + self.sianie +
-              "\nCzy rosnie: " + self.czy_rosnie +
-              "\nStan gleby: " + str(self.suchosc_gleby) +
-              "\nOwady: " + self.owady +
-              "\nChwasty: " + self.chwasty +
-              "\nPh gleby: " + self.ph_gleby +
-              "\nCzy na polu znajduje się przeszkoda: " + self.obstacle
-              + "\nCzy mozna stanac na tym polu: " + self.czyMoznaTuStanac)
-        print("Decyzja: " + decision_tree.make_decision(self))
+
+        if self.czyMoznaTuStanac == "tak":
+
+            print("\nParametry pola to:\nWspółrzędne: " + str(self.posX) + ", " + str(self.posY) +
+                  "\nUprawa: " + self.crop +
+                  "\nCzy zasiane: " + self.sianie +
+                  "\nCzy rosnie: " + self.czy_rosnie +
+                  "\nStan gleby: " + str(self.suchosc_gleby) +
+                  "\nOwady: " + self.owady +
+                  "\nChwasty: " + self.chwasty +
+                  "\nPh gleby: " + self.ph_gleby +
+                  "\nCzy na polu znajduje się przeszkoda: " + self.obstacle
+                  + "\nCzy mozna stanac na tym polu: " + self.czyMoznaTuStanac)
+            print("Decyzja: " + decision_tree.make_decision(self))
+        else:
+            print("\nNie można tu stanąć! Tutaj znajduje się przeszkoda: " + str(self.obstacle))
 
     def can_u_be_here(self):
         if self.czyMoznaTuStanac == "tak":
