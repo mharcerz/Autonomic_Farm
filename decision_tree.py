@@ -46,3 +46,74 @@ def make_decision(field):
 
     decision = model.predict(attributes_changed)
     return decision
+
+fname = Path("resources/training_tree/tree.sav")
+
+if fname.exists():
+    model = pickle.load(open(fname, 'rb'))
+else:
+    print("------------------------")
+    print("Building Tree")
+    print("------------------------")
+    df = pd.read_csv('resources/training_tree/training_tree.csv')
+
+    for i in df.sianie.values:
+        if i == 'zasiane':
+            df.sianie.replace(i, 0, inplace=True)
+        elif i == 'nie_zasiane':
+            df.sianie.replace(i, 1, inplace=True)
+
+    for i in df.czy_rosnie.values:
+        if i == 'rosnie':
+            df.czy_rosnie.replace(i, 0, inplace=True)
+        elif i == 'wyroslo':
+            df.czy_rosnie.replace(i, 1, inplace=True)
+
+    for i in df.owady.values:
+        if i == 'potrzebny_srodek_owady':
+            df.owady.replace(i, 0, inplace=True)
+        elif i == 'niepotrzebny_srodek_owady':
+            df.owady.replace(i, 1, inplace=True)
+
+    for i in df.chwasty.values:
+        if i == 'sa_chwasty':
+            df.chwasty.replace(i, 0, inplace=True)
+        elif i == 'brak_chwastow':
+            df.chwasty.replace(i, 1, inplace=True)
+
+    for i in df.ph_gleby.values:
+        if i == 'kwasowa':
+            df.ph_gleby.replace(i, 0, inplace=True)
+        elif i == 'w_normie':
+            df.ph_gleby.replace(i, 1, inplace=True)
+        elif i == 'zasadowa':
+            df.ph_gleby.replace(i, 2, inplace=True)
+
+    X = df.copy()
+    y = X.pop('decyzja')
+
+    model = dtc(criterion='entropy', max_depth=8)
+
+    # model.fit(X, y) generuje warning w predict
+    # https://stackoverflow.com/questions/69326639/sklearn-warning-valid-feature-names-in-version-1-0
+
+    model.fit(X.values, y)
+
+    features_name = df.columns[:-1]
+
+    target_names = ['nawoz', 'osusz', 'pestycydy', 'podlej', 'pomin', 'zasiej', 'zbierz',
+                    'zerwij_chwasty']
+
+    plot_tree(model,
+              feature_names=features_name,
+              class_names=target_names,
+              filled=True,
+              rounded=True)
+
+    # now, before saving to file:
+    figure = plt.gcf()  # get current figure
+    figure.set_size_inches(8, 6)
+    # when saving, specify the DPI
+    plt.savefig("resources/training_tree/myplot.png", dpi=700)
+
+    pickle.dump(model, open(fname, 'wb'))
