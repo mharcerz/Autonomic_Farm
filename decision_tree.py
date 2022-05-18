@@ -1,9 +1,10 @@
+import pickle #loading and saving tree
 import pandas as pd  # data processing
 import numpy as np  # working with arrays
 import matplotlib.pyplot as plt  # visualization
 from sklearn.tree import DecisionTreeClassifier as dtc
 from sklearn.tree import plot_tree  # tree diagram
-
+from pathlib import Path
 
 def classify_action_words(X):
     i_counter = 0
