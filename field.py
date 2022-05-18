@@ -1,5 +1,7 @@
 import random
 import pygame
+
+import decision_tree
 from loader import beetroots, obstacles, grass, dry_soil, normal_soil, wet_soil
 from constants import SQUARE_SIZE, ROWS, COLS, DRY_SOIL_COST, NORMAL_SOIL_COST, WET_SOIL_COST
 
@@ -10,13 +12,15 @@ class Field(pygame.sprite.Sprite):
 
     # wszystkie możliwe paramerty pola
     cropsTypes = ["", "Burak ćwikłowy", "Burak liściowy", "Burak cukrowy", "Burak zwyczajny"]
-    typesOfProtectionMeasures = ["", "pestycydy", "doglebowe", "systemiczne"]
-    soilStates = ["", "sucha", "zamokła", "w normie"]
-    fertilizerTypes = ["", "organiczny", "wapniowy", "naturalny"]
+    # do poprawy nazwy zmiennych
+    sianie = ["", "zasiane", "nie_zasiane"]
+    czy_rosnie = ["", "rosnie", "wyroslo"]
+    suchosc_gleby = [0, 1, 2, 3, 4]
+    owady = ["", "potrzebny_srodek_owady", "niepotrzebny_srodek_owady"]
+    chwasty = ["", "sa_chwasty", "brak_chwastow"]
+    ph_gleby = ["", "kwasowa", "w_normie", "zasadowa"]
     obstacleTypes = ["", "skała", "słup", "drzewo", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak",
                      "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak"]
-    isWatered = ["", "tak", "nie"]
-    isCollected = ["", "tak", "nie"]
 
     # tworzenie objektu pole przez losowanie dostępnych parametrów
     def __init__(self, posX, posY):
@@ -25,12 +29,14 @@ class Field(pygame.sprite.Sprite):
         self.posY = posY
         if self.posX == ROWS - 1 and self.posY == COLS - 1:
             self.crop = Field.cropsTypes[0]
-            self.protectionMeasure = Field.typesOfProtectionMeasures[0]
-            self.soilState = Field.soilStates[0]
-            self.fertilizer = Field.fertilizerTypes[0]
+            self.sianie = Field.sianie[0]
+            self.czy_rosnie = Field.czy_rosnie[0]
+            self.suchosc_gleby = Field.suchosc_gleby[0]
+            self.owady = Field.owady[0]
+            self.chwasty = Field.chwasty[0]
+            self.ph_gleby = Field.ph_gleby[0]
             self.obstacle = Field.obstacleTypes[0]
-            self.isWatered = Field.isWatered[0]
-            self.isCollected = Field.isCollected[0]
+
             self.czyMoznaTuStanac = "tak"
             self.cost = 0
 
@@ -39,13 +45,15 @@ class Field(pygame.sprite.Sprite):
             self.rect.topleft = (posY * SQUARE_SIZE, posX * SQUARE_SIZE)
         else:
             self.crop = Field.cropsTypes[random.randint(1, len(Field.cropsTypes) - 1)]
-            self.protectionMeasure = Field.typesOfProtectionMeasures[
-                random.randint(1, len(Field.typesOfProtectionMeasures) - 1)]
-            self.soilState = Field.soilStates[random.randint(1, len(Field.soilStates) - 1)]
-            self.fertilizer = Field.fertilizerTypes[random.randint(1, len(Field.fertilizerTypes) - 1)]
+            self.sianie = Field.sianie[
+                random.randint(1, len(Field.sianie) - 1)]
+            self.czy_rosnie = Field.czy_rosnie[random.randint(1, len(Field.czy_rosnie) - 1)]
+            self.suchosc_gleby = Field.suchosc_gleby[random.randint(0, len(Field.suchosc_gleby) - 1)]
             self.obstacle = Field.obstacleTypes[random.randint(1, len(Field.obstacleTypes) - 1)]
-            self.isWatered = Field.isWatered[random.randint(1, len(Field.isWatered) - 1)]
-            self.isCollected = Field.isCollected[random.randint(1, len(Field.isCollected) - 1)]
+            self.owady = Field.owady[random.randint(1, len(Field.owady) - 1)]
+            self.chwasty = Field.chwasty[random.randint(1, len(Field.chwasty) - 1)]
+            self.ph_gleby = Field.ph_gleby[random.randint(1, len(Field.ph_gleby) - 1)]
+
             self.czyMoznaTuStanac = "nie" if self.obstacle != "brak" else "tak"
 
             self.image = pygame.transform.scale(self.selectImage(), (SQUARE_SIZE, SQUARE_SIZE))
@@ -55,15 +63,17 @@ class Field(pygame.sprite.Sprite):
 
     # wypisanie parametrów pola
     def fieldParameters(self):
-        print("\nParametry pola to:\nWpółrzędne: " + str(self.posX) + " " + str(self.posY) +
+        print("\nParametry pola to:\nWspółrzędne: " + str(self.posX) + ", " + str(self.posY) +
               "\nUprawa: " + self.crop +
-              "\nŚrodek ochrony: " + self.protectionMeasure +
-              "\nStan gleby: " + self.soilState +
-              "\nStosowany nawóz: " + self.fertilizer +
-              "\nCzy wymaga podlewania: " + self.isWatered +
-              "\nCzy wymaga zbiorów: " + self.isCollected +
+              "\nCzy zasiane: " + self.sianie +
+              "\nCzy rosnie: " + self.czy_rosnie +
+              "\nStan gleby: " + str(self.suchosc_gleby) +
+              "\nOwady: " + self.owady +
+              "\nChwasty: " + self.chwasty +
+              "\nPh gleby: " + self.ph_gleby +
               "\nCzy na polu znajduje się przeszkoda: " + self.obstacle
-              + "\nCzy mozna mozna stanac na tym polu: " + self.czyMoznaTuStanac)
+              + "\nCzy mozna stanac na tym polu: " + self.czyMoznaTuStanac)
+        print("Decyzja: " + decision_tree.make_decision(self))
 
     def can_u_be_here(self):
         if self.czyMoznaTuStanac == "tak":
@@ -100,11 +110,11 @@ class Field(pygame.sprite.Sprite):
             #     return beetroots[2]
             # elif self.crop == "Burak zwyczajny":
             #     return beetroots[3]
-            if self.soilState == "sucha":
+            if self.suchosc_gleby == 0 or self.suchosc_gleby == 1:
                 return dry_soil
-            elif self.soilState == "w normie":
+            elif self.suchosc_gleby == 2:
                 return normal_soil
-            elif self.soilState == "zamokła":
+            elif self.suchosc_gleby == 3 or self.suchosc_gleby == 4:
                 return wet_soil
             else:
                 return grass
@@ -119,11 +129,11 @@ class Field(pygame.sprite.Sprite):
                 return obstacles[0]
 
     def getCost(self):
-        if self.soilState == "sucha":
+        if self.suchosc_gleby == 0 or self.suchosc_gleby == 1:
             return DRY_SOIL_COST
-        elif self.soilState == "w normie":
+        elif self.suchosc_gleby == 2:
             return NORMAL_SOIL_COST
-        elif self.soilState == "zamokła":
+        elif self.suchosc_gleby == 3 or self.suchosc_gleby == 4:
             return WET_SOIL_COST
         else:
             return 0
