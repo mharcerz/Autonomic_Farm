@@ -50,7 +50,7 @@ class Game:
                     if move_list:
                         self.tractor.move_tractor(row, col)
 
-                    # self.board.get_square_info(row, col)
+                    self.board.get_square_info(row, col)
                     print(move_list, "<------ move list")
                     self.tractor.change_direction(move_list, row, col)
                     self.tractor.tractor_direction()
