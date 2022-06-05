@@ -1,5 +1,6 @@
 import random
 import pygame
+import glob
 
 import decision_tree
 from loader import beetroots, obstacles, grass, dry_soil, normal_soil, wet_soil
@@ -11,7 +12,9 @@ class Field(pygame.sprite.Sprite):
     allFieldsDictionary = {}
 
     # wszystkie możliwe paramerty pola
-    cropsTypes = ["", "Burak ćwikłowy", "Burak liściowy", "Burak cukrowy", "Burak zwyczajny"]
+    cropsTypes = ["", "Marchewka", "Kalafior", "Ogorek", "Ziemniak", "Pomidor"]
+    crop_photo = ""
+    crop_photo_name = ""
     # do poprawy nazwy zmiennych
     sianie = ["", "zasiane", "nie_zasiane"]
     czy_rosnie = ["", "rosnie", "wyroslo"]
@@ -50,6 +53,33 @@ class Field(pygame.sprite.Sprite):
 
             if self.czyMoznaTuStanac == "tak":
                 self.crop = Field.cropsTypes[random.randint(1, len(Field.cropsTypes) - 1)]
+
+                if self.crop == 'Ogorek':
+                    file_path_type = ["resources/warzywa/Cucumber/*.jpg"]
+                    images = glob.glob(random.choice(file_path_type))
+                    self.crop_photo = str(random.choice(images))
+
+                elif self.crop == 'Marchewka':
+                    file_path_type = ["resources/warzywa/Carrot/*.jpg"]
+                    images = glob.glob(random.choice(file_path_type))
+                    self.crop_photo = str(random.choice(images))
+
+                elif self.crop == 'Kalafior':
+                    file_path_type = ["resources/warzywa/Cauliflower/*.jpg"]
+                    images = glob.glob(random.choice(file_path_type))
+                    self.crop_photo = str(random.choice(images))
+
+                elif self.crop == 'Ziemniak':
+                    file_path_type = ["resources/warzywa/Potato/*.jpg"]
+                    images = glob.glob(random.choice(file_path_type))
+                    self.crop_photo = str(random.choice(images))
+
+                elif self.crop == 'Pomidor':
+                    file_path_type = ["resources/warzywa/Tomato/*.jpg"]
+                    images = glob.glob(random.choice(file_path_type))
+                    self.crop_photo = str(random.choice(images))
+
+
                 self.sianie = Field.sianie[
                     random.randint(1, len(Field.sianie) - 1)]
                 self.czy_rosnie = Field.czy_rosnie[random.randint(1, len(Field.czy_rosnie) - 1)]
@@ -109,6 +139,9 @@ class Field(pygame.sprite.Sprite):
 
     def reset_field_image(self):
         self.image = pygame.transform.scale(self.selectImage(), (SQUARE_SIZE, SQUARE_SIZE))
+
+    def return_crop_source(self):
+        return self.crop_photo
 
     def selectImage(self):
         if self.czyMoznaTuStanac == "tak":

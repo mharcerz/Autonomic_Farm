@@ -1,7 +1,8 @@
 import pygame
-
+from pathlib import Path
 from constants import BACKGROUND, ROWS, COLS, SQUARE_SIZE, WIDTH, HEIGHT, WHITE
 from field import Field
+import categroriseCrop
 
 
 class Board(pygame.sprite.Sprite):
@@ -23,6 +24,10 @@ class Board(pygame.sprite.Sprite):
     @staticmethod
     def get_square_info(row, col):
         Field.allFieldsDictionary["{},{}".format(row, col)].fieldParameters()
+        crop_source = Field.allFieldsDictionary["{},{}".format(row, col)].return_crop_source()
+        crop_source = str(Path(crop_source))
+
+        categroriseCrop.categorise_crop(crop_source)
 
     def select_square(self, row, col):
         rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
