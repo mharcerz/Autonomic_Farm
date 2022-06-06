@@ -9,7 +9,7 @@ from tractor import Tractor
 
 
 class Game:
-    def __init__(self, screen_width, screen_height):
+    def __init__(self, screen_width, screen_height, population):
         self.screenHeight = screen_height
         self.screenWidth = screen_width
         self.run = True
@@ -18,7 +18,7 @@ class Game:
 
         self.board = Board(self.window)
         self.board.draw_grid()
-        self.board.draw_fields()
+        self.board.draw_fields(population)
         self.tractor = Tractor(self.window, TRACTOR_X, TRACTOR_Y, DIRECTION_WEST)
         self.spriteGroup.add(self.tractor)
         pygame.display.set_caption("Autonomic Farm")
