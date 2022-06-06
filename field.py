@@ -1,7 +1,6 @@
 import random
 import pygame
 import glob
-
 import decision_tree
 from loader import beetroots, obstacles, grass, dry_soil, normal_soil, wet_soil
 from constants import SQUARE_SIZE, ROWS, COLS, DRY_SOIL_COST, NORMAL_SOIL_COST, WET_SOIL_COST
@@ -11,34 +10,29 @@ class Field(pygame.sprite.Sprite):
     # słownik przechowujący wszystkie pola
     allFieldsDictionary = {}
 
-    # wszystkie możliwe paramerty pola
-    cropsTypes = ["", "Marchewka", "Kalafior", "Ogorek", "Ziemniak", "Pomidor"]
     crop_photo = ""
-    crop_photo_name = ""
-    # do poprawy nazwy zmiennych
     sianie = ["", "zasiane", "nie_zasiane"]
     czy_rosnie = ["", "rosnie", "wyroslo"]
     suchosc_gleby = [0, 1, 2, 3, 4]
     owady = ["", "potrzebny_srodek_owady", "niepotrzebny_srodek_owady"]
     chwasty = ["", "sa_chwasty", "brak_chwastow"]
     ph_gleby = ["", "kwasowa", "w_normie", "zasadowa"]
-    obstacleTypes = ["", "skała", "słup", "drzewo", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak",
-                     "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak", "brak"]
+    value = ["", "slup", "skala", "drzewo", "Marchewka", "Kalafior", "Ogorek", "Ziemniak", "Pomidor"]
 
-    # tworzenie objektu pole przez losowanie dostępnych parametrów
-    def __init__(self, posX, posY):
+    # tworzenie obiektu pole przez algorytm genetyczny a parametry wciąż losuje
+    def __init__(self, posX, posY, value_given):
         pygame.sprite.Sprite.__init__(self)
         self.posX = posX
         self.posY = posY
         if self.posX == ROWS - 1 and self.posY == COLS - 1:
-            self.crop = Field.cropsTypes[0]
+            self.crop = Field.value[0]
             self.sianie = Field.sianie[0]
             self.czy_rosnie = Field.czy_rosnie[0]
             self.suchosc_gleby = Field.suchosc_gleby[0]
             self.owady = Field.owady[0]
             self.chwasty = Field.chwasty[0]
             self.ph_gleby = Field.ph_gleby[0]
-            self.obstacle = Field.obstacleTypes[0]
+            self.obstacle = Field.value[0]
 
             self.czyMoznaTuStanac = "tak"
             self.cost = 0
@@ -48,11 +42,14 @@ class Field(pygame.sprite.Sprite):
             self.rect.topleft = (posY * SQUARE_SIZE, posX * SQUARE_SIZE)
         else:
 
-            self.obstacle = Field.obstacleTypes[random.randint(1, len(Field.obstacleTypes) - 1)]
-            self.czyMoznaTuStanac = "nie" if self.obstacle != "brak" else "tak"
-
-            if self.czyMoznaTuStanac == "tak":
-                self.crop = Field.cropsTypes[random.randint(1, len(Field.cropsTypes) - 1)]
+            if value_given <= 3:
+                self.obstacle = Field.value[value_given]
+                self.czyMoznaTuStanac = "nie"
+                self.crop = Field.value[0]
+            else:
+                self.obstacle = "brak"
+                self.czyMoznaTuStanac = "tak"
+                self.crop = Field.value[value_given]
 
                 if self.crop == 'Ogorek':
                     file_path_type = ["resources/warzywa/Cucumber/*.jpg"]
@@ -129,7 +126,6 @@ class Field(pygame.sprite.Sprite):
     def addFieldToDict(dictionary, key, item):
         if key not in dictionary:
             dictionary[key] = item
-            # item.fieldParameters()
 
     # wypisanie wszystkich pól ze słownika
     def printAllFieldsParameters(self, dictionary):
@@ -145,14 +141,6 @@ class Field(pygame.sprite.Sprite):
 
     def selectImage(self):
         if self.czyMoznaTuStanac == "tak":
-            # if self.crop == "Burak ćwikłowy":
-            #     return beetroots[0]
-            # elif self.crop == "Burak liściowy":
-            #     return beetroots[1]
-            # elif self.crop == "Burak cukrowy":
-            #     return beetroots[2]
-            # elif self.crop == "Burak zwyczajny":
-            #     return beetroots[3]
             if self.suchosc_gleby == 0 or self.suchosc_gleby == 1:
                 return dry_soil
             elif self.suchosc_gleby == 2:
@@ -166,7 +154,7 @@ class Field(pygame.sprite.Sprite):
                 return obstacles[0]
             elif self.obstacle == "drzewo":
                 return obstacles[1]
-            elif self.obstacle == "skała":
+            elif self.obstacle == "skala":
                 return obstacles[2]
             else:
                 return obstacles[0]
