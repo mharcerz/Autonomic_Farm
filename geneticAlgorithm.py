@@ -159,3 +159,35 @@ def run_evolution(n, N):  # N jak duża populacja
         N -= 2
     return max(how_did_it_go(population, n)), population[0]
 
+
+def genetic_algorithm():
+    print("-----------------")
+    print("Begin Genetic Algorithm")
+    maxi = -1
+    population_with_max = -1
+    gen = -1
+
+    for i in range(NUMBER_OF_TRAILS):
+        temp_max, population_temp = run_evolution(COLS,
+                                                  POPULATION_SIZE)  # wielkosc kwadratu, wielkosc populacji z ktorej losujemy
+        if temp_max > maxi:
+            maxi = temp_max
+            population_with_max = population_temp
+            gen = i
+
+    print(maxi)
+    for i in population_with_max:
+        print(i)
+    print("W generacji nr: " + str(gen))
+
+    with open('populacja.txt', 'w') as f:
+        for element in population_with_max:
+            for i in element:
+                f.write(str(i) + ', ')
+            f.write('\n')
+
+    with open('populacja_2.data', 'wb') as filehandle:
+        pickle.dump(population_with_max, filehandle)
+
+    print("End Genetic Algorithm")
+    print("-----------------")
