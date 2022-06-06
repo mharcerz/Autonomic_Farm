@@ -16,7 +16,6 @@ class Board(pygame.sprite.Sprite):
         for row in range(ROWS):
             for col in range(COLS):
                 value = population[row][col]
-                print(value)
                 field = Field(row, col, value)
                 self.sprites.add(field)
                 wspolrzedna = str(row) + "," + str(col)
