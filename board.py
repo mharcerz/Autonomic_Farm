@@ -3,11 +3,6 @@ from pathlib import Path
 from constants import BACKGROUND, ROWS, COLS, SQUARE_SIZE, WIDTH, HEIGHT, WHITE
 from field import Field
 import categroriseCrop
-import pickle
-
-with open('resources/populacja/population_2.data', 'rb') as filehandle:
-    # read the data as binary data stream
-    population = pickle.load(filehandle)
 
 class Board(pygame.sprite.Sprite):
     def __init__(self, window):
@@ -17,10 +12,11 @@ class Board(pygame.sprite.Sprite):
         self.window.fill(BACKGROUND)
         self.sprites = pygame.sprite.Group()
 
-    def draw_fields(self):
+    def draw_fields(self, population):
         for row in range(ROWS):
             for col in range(COLS):
                 value = population[row][col]
+                print(value)
                 field = Field(row, col, value)
                 self.sprites.add(field)
                 wspolrzedna = str(row) + "," + str(col)

@@ -185,9 +185,8 @@ def genetic_algorithm():
             for i in element:
                 f.write(str(i) + ', ')
             f.write('\n')
-
-    with open('resources/populacja/population_2.data', 'wb') as filehandle:
-        pickle.dump(population_with_max, filehandle)
-
+    f.close()
     print("End Genetic Algorithm")
     print("-----------------")
+
+    return population_with_max
