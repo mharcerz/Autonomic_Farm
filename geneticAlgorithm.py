@@ -180,13 +180,13 @@ def genetic_algorithm():
         print(i)
     print("W generacji nr: " + str(gen))
 
-    with open('population.txt', 'w') as f:
+    with open('resources/populacja/population.txt', 'w') as f:
         for element in population_with_max:
             for i in element:
                 f.write(str(i) + ', ')
             f.write('\n')
 
-    with open('population_2.data', 'wb') as filehandle:
+    with open('resources/populacja/population_2.data', 'wb') as filehandle:
         pickle.dump(population_with_max, filehandle)
 
     print("End Genetic Algorithm")

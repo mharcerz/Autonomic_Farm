@@ -5,7 +5,7 @@ from field import Field
 import categroriseCrop
 import pickle
 
-with open('population_2.data', 'rb') as filehandle:
+with open('resources/populacja/population_2.data', 'rb') as filehandle:
     # read the data as binary data stream
     population = pickle.load(filehandle)
 
