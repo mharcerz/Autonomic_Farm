@@ -93,11 +93,15 @@ class Field(pygame.sprite.Sprite):
             self.rect.topleft = (posY * SQUARE_SIZE, posX * SQUARE_SIZE)
             self.cost = 0
 
+    # sprawdzenie czy mozna siac na danym polu
+    def isVegetable(self):
+        if self.czyMoznaTuStanac == "tak":
+            return True
+
     # wypisanie parametrów pola
     def fieldParameters(self):
 
         if self.czyMoznaTuStanac == "tak":
-
             print("\nParametry pola to:\nWspółrzędne: " + str(self.posX) + ", " + str(self.posY) +
                   "\nUprawa: " + self.crop +
                   "\nCzy zasiane: " + self.sianie +
