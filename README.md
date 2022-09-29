@@ -1,5 +1,8 @@
 # Autonomic_Farm
 
+Student project written in python using artificial intelligence
+
+
 Twórcy:
 - Adam Wieczarek
 - Michał Hołubowicz
